@@ -6554,10 +6554,10 @@ relay-angular-plugin@0.0.1:
   resolved "https://registry.yarnpkg.com/relay-angular-plugin/-/relay-angular-plugin-0.0.1.tgz#ade34d71eb4a2ad3dede35ab9e0955f7c3e0861c"
   integrity sha512-7igrVPLEKOFvsSl5C83BoFNt75ZwwSdsfNwrkeTd9k8KFR9V5/P9h8n2I0QKt98gcDPSzas0VdOlgmalovUWuw==
 
-relay-angular@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/relay-angular/-/relay-angular-0.0.1.tgz#3b64f4ef0aefc069388831eb72611745004c9e6d"
-  integrity sha512-x2HPxATvQcMBZaVbZ/CxgPiIbkM/ZlkYGD4Ap55vnHQOQMyr/M4s3YOh/xWd920LMrbQtydIGo9vOcAR2IGrRA==
+relay-angular@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/relay-angular/-/relay-angular-0.0.2.tgz#81faefba70385fefd58df1f24126c385fe100525"
+  integrity sha512-prGypzBRzH6Y/Q/ir5/uL19l2yDfNrCDcVM7MGQ4OfDwG8CwcbXy4oQweIBb4FFWD/DUyYom5JJrHWMe5hOhhw==
   dependencies:
     fbjs "^1.0.0"
 

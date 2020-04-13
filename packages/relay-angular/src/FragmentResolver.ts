@@ -60,7 +60,7 @@ class FragmentResolver {
     _fragment: any;
     _fragmentNode: any;
     _fragmentRef: any;
-    _result: FragmentResult | null;
+    _result: FragmentResult;
     _disposable: Disposable = { dispose: (): void => undefined };
     _selector: SingularOrPluralSelectors;
     _forceUpdate: any;
@@ -138,7 +138,7 @@ class FragmentResolver {
             this._environment = environment;
             this._fragmentNode = fragmentNode;
             this._fragmentRef = fragmentRef;
-            this._result = null;
+            (this._result as any) = null;
             this.dispose();
             if (this._fragmentRef == null) {
                 this._result = { data: null, snapshot: null };
@@ -174,30 +174,23 @@ class FragmentResolver {
 
     subscribe(): void {
         const environment = this._environment;
-        if (!this._result) {
-            return;
-        }
+        const renderedSnapshot = this._result.snapshot;
 
         this._disposable && this._disposable.dispose();
-
-        if (!this._result || this._result.snapshot) {
+        if (!renderedSnapshot) {
             this._disposable = { dispose: (): void => undefined };
         }
 
-        const renderedSnapshot = this._result.snapshot;
-
-        const dataSubscriptions: any[] = [];
+        const dataSubscriptions: any = [];
 
         const { snapshot: currentSnapshot } = this._result;
         if (Array.isArray(renderedSnapshot)) {
             currentSnapshot.forEach((snapshot, idx) => {
                 dataSubscriptions.push(
                     environment.subscribe(snapshot, (latestSnapshot) => {
-                        if (this._result) {
-                            this._result.snapshot[idx] = latestSnapshot;
-                            this._result.data[idx] = latestSnapshot.data;
-                            this.refreshHooks();
-                        }
+                        this._result.snapshot[idx] = latestSnapshot;
+                        this._result.data[idx] = latestSnapshot.data;
+                        this.refreshHooks();
                     }),
                 );
             });
