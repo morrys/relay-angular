@@ -62,7 +62,10 @@ class QueryFetcher<TOperationType extends OperationType> {
     }
 
     lookupInStore(environment: IEnvironment, operation, fetchPolicy: FetchPolicy): Snapshot {
-        if (isStorePolicy(fetchPolicy) && environment.check(operation) === 'available') {
+        if (
+            isStorePolicy(fetchPolicy) &&
+            (environment.check(operation) === 'available' || environment.check(operation).status === 'available')
+        ) {
             return environment.lookup(operation.fragment, operation);
         }
         return null;
@@ -74,13 +77,22 @@ class QueryFetcher<TOperationType extends OperationType> {
         options,
         retain: (environment, query) => Disposable = (environment, query): Disposable => environment.retain(query),
     ): RenderProps<TOperationType> {
-        const { fetchPolicy = defaultPolicy, networkCacheConfig, fetchKey } = options;
+        const { fetchPolicy = defaultPolicy, networkCacheConfig, fetchKey, skip } = options;
         let storeSnapshot;
         const retry = (cacheConfigOverride: CacheConfig = networkCacheConfig): void => {
             this.disposeRequest();
             this.fetch(cacheConfigOverride, false);
         };
         this.clearTemporaryRetain();
+
+        if (skip) {
+            return {
+                cached: false,
+                retry,
+                error: null,
+                props: undefined,
+            };
+        }
         const isDiffEnvQuery = this.isDiffEnvQuery(environment, query);
         if (isDiffEnvQuery || fetchPolicy !== this.fetchPolicy || fetchKey !== this.fetchKey) {
             if (isDiffEnvQuery) {
