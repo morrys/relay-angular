@@ -6549,13 +6549,15 @@ regjsparser@^0.6.4:
   dependencies:
     jsesc "~0.5.0"
 
-"relay-angular-plugin@file:../../relay-angular-plugin-0.0.1-a1.tgz":
-  version "0.0.1-a1"
-  resolved "file:../../relay-angular-plugin-0.0.1-a1.tgz#26cac2335c83582e4caa25dd6fcb496aa2e2223c"
+relay-angular-plugin@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/relay-angular-plugin/-/relay-angular-plugin-0.0.1.tgz#ade34d71eb4a2ad3dede35ab9e0955f7c3e0861c"
+  integrity sha512-7igrVPLEKOFvsSl5C83BoFNt75ZwwSdsfNwrkeTd9k8KFR9V5/P9h8n2I0QKt98gcDPSzas0VdOlgmalovUWuw==
 
-"relay-angular@file:../../relay-angular-0.0.1-a1.tgz":
-  version "0.0.1-a1"
-  resolved "file:../../relay-angular-0.0.1-a1.tgz#be9bda551f87a8e864216516235707d3cc295aa6"
+relay-angular@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/relay-angular/-/relay-angular-0.0.1.tgz#3b64f4ef0aefc069388831eb72611745004c9e6d"
+  integrity sha512-x2HPxATvQcMBZaVbZ/CxgPiIbkM/ZlkYGD4Ap55vnHQOQMyr/M4s3YOh/xWd920LMrbQtydIGo9vOcAR2IGrRA==
   dependencies:
     fbjs "^1.0.0"
 

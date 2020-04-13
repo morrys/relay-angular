@@ -14,7 +14,9 @@ function relayDecorator(target, decoratorName, name, resolve, props): void {
     let resolver;
     target.ngOnInit = function (): any {
         resolver = resolve(decoratorName, () => {
-            this[name] = resolver.update(props.apply(this, [this]));
+            if (resolver && resolver.update) {
+                this[name] = resolver.update(props.apply(this, [this]));
+            }
         });
         if (ngOnInitOriginal) ngOnInitOriginal.apply(this);
         this[name] = resolver.init(props.apply(this, [this]));
