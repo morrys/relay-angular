@@ -1,0 +1,35 @@
+{
+    "private": true,
+    "scripts": {
+        "bootstrap": "lerna bootstrap",
+        "postinstall": "lerna exec -- yarn install",
+        "build": "lerna run compile && lerna run test",
+        "compile": "lerna run compile",
+        "clean-dep": "lerna run clean-dep",
+        "deploy": "lerna run compile && lerna run test && lerna publish from-package --no-verify-access",
+        "eslint": "lerna run eslint",
+        "format": "lerna run format",
+        "test": "lerna run test"
+    },
+    "workspaces": [
+        "packages/*"
+    ],
+    "devDependencies": {
+        "@bazel/typescript": "1.5.0",
+        "@types/node": "~13.11.1",
+        "ts-node": "~8.8.2",
+        "@typescript-eslint/eslint-plugin": "2.24.0",
+        "@typescript-eslint/parser": "2.24.0",
+        "eslint": "6.8.0",
+        "eslint-config-prettier": "6.10.1",
+        "eslint-import-resolver-typescript": "2.0.0",
+        "eslint-plugin-import": "2.20.1",
+        "eslint-plugin-json": "2.1.1",
+        "eslint-plugin-prettier": "3.1.2",
+        "lerna": "^3.16.4",
+        "prettier": "2.0.1",
+        "typescript": "3.8.3",
+        "rimraf": "2.6.3",
+        "promise-polyfill": "6.1.0"
+    }
+}

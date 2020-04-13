@@ -1,0 +1,20 @@
+<section>
+  <div class="headerButton">
+    <button [ngClass]="{'border': user==='me'}" class="userButton" (click)="onChangeUser('me')">ME</button>
+    <button [ngClass]="{'border': user==='you'}" class="userButton" (click)="onChangeUser('you')">YOU</button>
+    </div>
+  <todo-query [userId]="user">
+  </todo-query>
+  <footer class="headerButton">
+    <button 
+    class="clear-completed userButton"
+    (click)="handleRightEnv($event)">
+    Right Environment
+</button>
+  <button 
+          class="clear-completed userButton"
+          (click)="handleWrongEnv($event)">
+          Wrong Environment
+  </button>
+</footer>
+</section>

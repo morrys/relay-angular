@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "ts-node ./server.ts",
+    "update-schema": "ts-node ./scripts/updateSchema.ts"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-graphql": "^0.7.1",
+    "graphql": "^14.2.0",
+    "graphql-relay": "^0.6.0",
+    "prop-types": "^15.7.2",
+    "whatwg-fetch": "3.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express-graphql": "^0.9.0",
+    "typescript": "3.8.3",
+    "cors": "2.8.5",
+    "ts-node": "^8.8.2"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": false,
+    "jsxBracketSameLine": true
+  }
+}

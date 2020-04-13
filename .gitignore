@@ -1,0 +1,7 @@
+node_modules
+lib
+*.tgz
+lerna-debug.log
+yarn-error.log
+.npmrc
+.DS_Store

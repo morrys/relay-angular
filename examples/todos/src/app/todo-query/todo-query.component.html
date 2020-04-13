@@ -1,0 +1,4 @@
+  <todo-app *ngIf="result && result.props && result.props.user; else loading"
+  [fragmentRef]="result.props.user">
+  {{result}}
+  </todo-app>

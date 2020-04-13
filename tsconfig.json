@@ -1,0 +1,7 @@
+{
+    "extends": "./config/tsconfig.base.json",
+    "references": [
+        { "path": "packages/relay-angular" },
+        { "path": "packages/relay-angular-plugin" },
+      ]
+}

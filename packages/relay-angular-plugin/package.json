@@ -1,0 +1,42 @@
+{
+  "name": "relay-angular-plugin",
+  "version": "0.0.1",
+  "keywords": [
+    "relay",
+    "angular",
+    "graphql",
+    "decorator",
+    "ast",
+    "typescript",
+    "plugin"
+  ],
+  "main": "lib/index.js",
+  "license": "MIT",
+  "description": "Relay Angular Plugin",
+  "author": {
+    "name": "morrys"
+  },
+  "homepage": "https://github.com/morrys/relay-angular",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/morrys/relay-angular"
+  },
+  "scripts": {
+    "clean": "rimraf lib/*",
+    "clean-dep": "rimraf node_modules/*",
+    "precompile": "npm run clean",
+    "compile": "tsc",
+    "format": "prettier --write \"src/**/*.{j,t}s*\"",
+    "eslint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "relay-config": ">=8.0.0",
+    "ngx-build-plus": "^8.0.0"
+  },
+  "devDependencies": {
+    "ngx-build-plus": "^8.0.0",
+    "relay-config": "^9.0.0"
+  }
+}
