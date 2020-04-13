@@ -33,6 +33,7 @@
     "relay-runtime": ">=8.0.0"
   },
   "devDependencies": {
-    "rxjs": "~6.4.0"
+    "rxjs": "~6.4.0",
+    "relay-runtime": "^9.0.0"
   }
 }
