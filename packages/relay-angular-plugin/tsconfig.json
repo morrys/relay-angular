@@ -3,6 +3,7 @@
     "compilerOptions": {
         "outDir": "lib",
         "rootDir": "./src",
+        "types": ["node"]
     },
     "bazelOptions": {
         "suppressTsconfigOverrideWarnings": true,

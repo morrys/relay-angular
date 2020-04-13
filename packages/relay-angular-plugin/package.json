@@ -36,7 +36,9 @@
     "ngx-build-plus": "^8.0.0"
   },
   "devDependencies": {
+    "@ngtools/webpack": "^8.3.26",
     "ngx-build-plus": "^8.0.0",
-    "relay-config": "^9.0.0"
+    "relay-config": "^9.0.0",
+    "graphql": "^14.2.0"
   }
 }
