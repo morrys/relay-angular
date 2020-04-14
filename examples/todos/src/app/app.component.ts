@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { EnvironmentContext } from 'relay-angular';
 import EnvironmentError from '../relay/errorRelay';
 import EnvironmentRight from '../relay/relay';
