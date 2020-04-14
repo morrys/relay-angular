@@ -1,14 +1,20 @@
-# [@wora](https://github.com/morrys/relay-angular)
+# [@relay-angular](https://github.com/morrys/relay-angular)
 
-## [Documentation](https://morrys.github.io/relay-angular/)
+Relay for Angular 
 
-**the github page contains all the documentation relating to the libraries distributed by this monorepo.**
+## Installation
 
-## Community challenge
+Install relay-angular using yarn or npm:
 
-The idea that led me to create this repository is to collect all the great work done by the community on github for react and react-native in order to create components and utilities that can be rendered anywhere.
+```
+yarn add relay-angular relay-runtime
+```
 
-If anyone is interested in sharing their idea, contact me (link in bio).
+Install relay-compiler using yarn or npm:
+
+```
+yarn add relay-angular-plugin ngx-build-plus relay-compiler relay-config
+```
 
 ## Contributing
 
