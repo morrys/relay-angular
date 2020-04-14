@@ -14,17 +14,14 @@ export class AppComponent {
     constructor(private environmentContext: EnvironmentContext) {}
 
     onChangeUser(user) {
-        console.log('user', user);
         this.user = user;
     }
 
     handleRightEnv() {
         this.environmentContext.next(EnvironmentRight);
-        console.log('this environmentContex', this.environmentContext);
     }
 
     handleWrongEnv() {
         this.environmentContext.next(EnvironmentError);
-        console.log('this environmentContex', this.environmentContext);
     }
 }

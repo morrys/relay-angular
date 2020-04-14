@@ -7,8 +7,7 @@
     <li *ngFor="let todo of data.todos.edges" [class.completed]="todo.node.complete">
       <app-todo-list-item
         [fragmentRef]="todo.node"
-        (toggleComplete)="onToggleTodoComplete($event)"
-        (remove)="onRemoveTodo($event)"></app-todo-list-item>
+        [fragmentRefUser]="data"></app-todo-list-item>
     </li>
   </ul>
 </section>

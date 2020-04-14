@@ -1,14 +1,25 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Fragment } from 'relay-angular';
 import { graphql } from 'relay-runtime';
 import { Todo } from '../todo';
 import { todoListItem_todo$key, todoListItem_todo$data } from '../../__generated__/relay/todoListItem_todo.graphql';
+import changeTodoStatus from '../mutations/changeTodoStatus';
+import removeTodo from '../mutations/removeTodo';
 
 const fragmentNode = graphql`
     fragment todoListItem_todo on Todo {
         complete
         id
         text
+    }
+`;
+
+const fragmentNodeUser = graphql`
+    fragment todoListItem_user on User {
+        id
+        userId
+        totalCount
+        completedCount
     }
 `;
 
@@ -21,6 +32,9 @@ export class TodoListItemComponent {
     @Input()
     fragmentRef: todoListItem_todo$key;
 
+    @Input()
+    fragmentRefUser;
+
     @Fragment<todoListItem_todo$key>(function() {
         return {
             fragmentNode,
@@ -29,17 +43,19 @@ export class TodoListItemComponent {
     })
     todo: todoListItem_todo$data;
 
-    @Output()
-    remove: EventEmitter<Todo> = new EventEmitter();
+    @Fragment(function() {
+        return {
+            fragmentNode: fragmentNodeUser,
+            fragmentRef: this.fragmentRefUser,
+        };
+    })
+    user;
 
-    @Output()
-    toggleComplete: EventEmitter<Todo> = new EventEmitter();
-
-    toggleTodoComplete(todo: Todo) {
-        this.toggleComplete.emit(todo);
+    toggleTodoComplete() {
+        changeTodoStatus.commit(!this.todo.complete, this.todo, this.user);
     }
 
     removeTodo(todo: Todo) {
-        this.remove.emit(todo);
+        removeTodo.commit(todo, this.user);
     }
 }

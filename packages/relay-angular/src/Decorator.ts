@@ -7,22 +7,49 @@ export function noSideEffects<T>(fn: () => T): T {
     return ({ toString: fn }.toString() as unknown) as T;
 }
 
+let index = 0;
+
+const mapResolver: Map<string, any> = new Map();
+
+function getOrCreateResolver(id: string, decoratorName: string, resolve: any): any {
+    if (mapResolver.has(id)) {
+        return mapResolver.get(id);
+    }
+    const resolver = resolve(decoratorName);
+    mapResolver.set(id, resolver);
+    return resolver;
+}
+
+function disposeResolver(id: string): any {
+    if (mapResolver.has(id)) {
+        const resolver = mapResolver.get(id);
+        if (resolver) {
+            resolver.dispose();
+            mapResolver.delete(id);
+        }
+    }
+}
+
 function relayDecorator(target, decoratorName, name, resolve, props): void {
     const ngOnInitOriginal = target.ngOnInit;
     const ngOnChangesOriginal = target.ngOnChanges;
     const ngOnDestroyOriginal = target.ngOnDestroy;
-    let resolver;
+    index += 1;
+    const id = `${index}-${name}`;
     target.ngOnInit = function (): any {
-        resolver = resolve(decoratorName, () => {
+        const resolver = getOrCreateResolver(id, decoratorName, resolve);
+        if (ngOnInitOriginal) ngOnInitOriginal.apply(this);
+        const forceUpdate = (): void => {
+            const resolver = getOrCreateResolver(id, decoratorName, resolve);
             if (resolver && resolver.update) {
                 this[name] = resolver.update(props.apply(this, [this]));
             }
-        });
-        if (ngOnInitOriginal) ngOnInitOriginal.apply(this);
-        this[name] = resolver.init(props.apply(this, [this]));
+        };
+        this[name] = resolver.init(props.apply(this, [this]), forceUpdate);
     };
     target.ngOnChanges = function (changes): any {
         if (ngOnChangesOriginal) ngOnChangesOriginal.apply(this, [changes]);
+        const resolver = getOrCreateResolver(id, decoratorName, resolve);
         if (resolver && resolver.update) {
             this[name] = resolver.update(props.apply(this, [this]));
         }
@@ -30,7 +57,7 @@ function relayDecorator(target, decoratorName, name, resolve, props): void {
 
     target.ngOnDestroy = function (): any {
         if (ngOnDestroyOriginal) ngOnDestroyOriginal.apply(this);
-        if (resolver) resolver.dispose();
+        disposeResolver(id);
     };
 }
 

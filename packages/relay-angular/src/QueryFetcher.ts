@@ -24,6 +24,7 @@ class QueryFetcher<TOperationType extends OperationType> {
     forceUpdate: (_o: any) => void;
     suspense: boolean;
     releaseQueryTimeout;
+    indexUpdate = 0;
 
     constructor(forceUpdate = (): void => undefined, suspense = false) {
         this.suspense = suspense;
@@ -32,6 +33,13 @@ class QueryFetcher<TOperationType extends OperationType> {
 
     setForceUpdate(forceUpdate: () => void): void {
         this.forceUpdate = forceUpdate;
+    }
+
+    refreshHooks(): void {
+        if (this.forceUpdate) {
+            this.indexUpdate += 1;
+            this.forceUpdate(this.indexUpdate);
+        }
     }
 
     dispose(): void {

@@ -16,6 +16,7 @@ export type todoList_user = {
             } | null;
         } | null> | null;
     } | null;
+    readonly " $fragmentRefs": FragmentRefs<"todoListItem_user">;
     readonly " $refType": "todoList_user";
 };
 export type todoList_user$data = todoList_user;
@@ -158,9 +159,14 @@ return {
           ]
         }
       ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "todoListItem_user",
+      "args": null
     }
   ]
 };
 })();
-(node as any).hash = 'd8ac7fca7e250b3007232f1571dc75a1';
+(node as any).hash = '9f91aaba6f68a438a7fbe77b81e5cc26';
 export default node;

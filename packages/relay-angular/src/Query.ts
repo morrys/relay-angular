@@ -3,18 +3,21 @@ import QueryFetcher from './QueryFetcher';
 import { environmentContext } from './RelayProvider';
 import { createOperation } from './Utils';
 
-export const Query = makeQueryDecorator('Query', (_decoratorName, forceUpdate) => {
-    const queryFetcher = new QueryFetcher(forceUpdate);
+export const Query = makeQueryDecorator('Query', (_decoratorName) => {
+    const queryFetcher = new QueryFetcher();
     let environment = null;
     let first = true;
     const subscription = environmentContext.subscribe((env) => {
         environment = env;
         if (!first) {
-            forceUpdate();
+            queryFetcher.refreshHooks();
         }
-        first = false;
     });
-    const update = (props): any => {
+    const update = (props, forceUpdate: () => undefined): any => {
+        if (forceUpdate) {
+            first = false;
+            queryFetcher.setForceUpdate(forceUpdate);
+        }
         const memoVariables = props.variables;
         const operation = createOperation(props.query, memoVariables);
         return queryFetcher.execute(environment, operation, props.options || {});

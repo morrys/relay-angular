@@ -1,5 +1,5 @@
 /* tslint:disable */
-/* @relayHash a271834c665673a44ec0b79968f082ab */
+/* @relayHash 499c8a34e3bca9935b9d5147531ec0f6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -64,11 +64,19 @@ fragment todoListItem_todo on Todo {
   text
 }
 
+fragment todoListItem_user on User {
+  id
+  userId
+  totalCount
+  completedCount
+}
+
 fragment todoList_user on User {
   id
   userId
   totalCount
   completedCount
+  ...todoListItem_user
   todos(first: 2147483647) {
     edges {
       node {
@@ -285,7 +293,7 @@ return {
     "operationKind": "query",
     "name": "todoQueryQuery",
     "id": null,
-    "text": "query todoQueryQuery(\n  $userId: String\n) {\n  user(id: $userId) {\n    id\n    ...todoApp_user\n  }\n}\n\nfragment todoApp_user on User {\n  id\n  userId\n  totalCount\n  ...todoListFooter_user\n  ...todoList_user\n}\n\nfragment todoListFooter_user on User {\n  id\n  userId\n  completedCount\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  totalCount\n}\n\nfragment todoListItem_todo on Todo {\n  complete\n  id\n  text\n}\n\nfragment todoList_user on User {\n  id\n  userId\n  totalCount\n  completedCount\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        ...todoListItem_todo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
+    "text": "query todoQueryQuery(\n  $userId: String\n) {\n  user(id: $userId) {\n    id\n    ...todoApp_user\n  }\n}\n\nfragment todoApp_user on User {\n  id\n  userId\n  totalCount\n  ...todoListFooter_user\n  ...todoList_user\n}\n\nfragment todoListFooter_user on User {\n  id\n  userId\n  completedCount\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  totalCount\n}\n\nfragment todoListItem_todo on Todo {\n  complete\n  id\n  text\n}\n\nfragment todoListItem_user on User {\n  id\n  userId\n  totalCount\n  completedCount\n}\n\nfragment todoList_user on User {\n  id\n  userId\n  totalCount\n  completedCount\n  ...todoListItem_user\n  todos(first: 2147483647) {\n    edges {\n      node {\n        id\n        complete\n        ...todoListItem_todo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
     "metadata": {}
   }
 };

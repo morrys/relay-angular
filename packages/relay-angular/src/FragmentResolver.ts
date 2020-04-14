@@ -82,8 +82,10 @@ class FragmentResolver {
     }
 
     refreshHooks(): void {
-        this.indexUpdate += 1;
-        this._forceUpdate(this.indexUpdate);
+        if (this._forceUpdate) {
+            this.indexUpdate += 1;
+            this._forceUpdate(this.indexUpdate);
+        }
     }
 
     dispose(): void {
@@ -507,26 +509,27 @@ export default FragmentResolver;
 
 export const resolverDecorator = (
     decoratorName,
-    forceUpdate,
 ): {
-    init: (props: any) => any;
+    init: (forceUpdate, props: any) => any;
     update: (props: any) => any;
     dispose: () => void;
 } => {
-    const resolver = new FragmentResolver(forceUpdate);
+    const resolver = new FragmentResolver();
     let environment = null;
     let first = true;
     const subscription = environmentContext.subscribe((env) => {
         environment = env;
         if (!first) {
-            forceUpdate();
+            resolver.refreshHooks();
         }
-        first = false;
     });
-    const update = (props): any => {
+    const update = (props: any, forceUpdate?: () => undefined): any => {
+        if (forceUpdate) {
+            first = false;
+            resolver.setForceUpdate(forceUpdate);
+        }
         resolver.resolve(environment, props.fragmentNode || props.fragmentNode, props.fragmentRef);
         const data = resolver.getData();
-        decoratorName;
         if (data) {
             switch (decoratorName) {
                 case PAGINATION:

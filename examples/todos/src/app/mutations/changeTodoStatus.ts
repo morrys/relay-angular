@@ -43,7 +43,7 @@ function commit(complete: boolean, todo: any, user: any): any {
         variables: {
             input,
         },
-        optimisticResponse: getOptimisticResponse(complete, todo, user),
+        //optimisticResponse: getOptimisticResponse(complete, todo, user),
     });
 }
 

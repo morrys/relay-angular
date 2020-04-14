@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Fragment } from 'relay-angular';
 import { graphql } from 'relay-runtime';
-import { Todo } from '../todo';
 import markAllTodosMutation from '../mutations/markAllTodosMutation';
 
 const fragmentNode = graphql`
@@ -10,6 +9,7 @@ const fragmentNode = graphql`
         userId
         totalCount
         completedCount
+        ...todoListItem_user
         todos(
             first: 2147483647 # max GraphQLInt
         ) @connection(key: "TodoList_todos") {
@@ -39,12 +39,6 @@ export class TodoListComponent {
     }))
     data: any;
 
-    @Output()
-    remove: EventEmitter<Todo> = new EventEmitter();
-
-    @Output()
-    toggleComplete: EventEmitter<Todo> = new EventEmitter();
-
     handleMarkAllChange(e) {
         console.log('e', e, this.data);
         const complete = e.target.checked;
@@ -52,13 +46,5 @@ export class TodoListComponent {
         if (this.data.todos) {
             markAllTodosMutation.commit(complete, this.data.todos, this.data.id, this.data.userId, this.data.totalCount);
         }
-    }
-
-    onToggleTodoComplete(todo: Todo) {
-        this.toggleComplete.emit(todo);
-    }
-
-    onRemoveTodo(todo: Todo) {
-        this.remove.emit(todo);
     }
 }
