@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "ng build",
+    "build": "ng build --plugin relay-angular-plugin",
     "start": "ng serve --plugin relay-angular-plugin",
     "test": "ng test",
     "lint": "ng lint",
