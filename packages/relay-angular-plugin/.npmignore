@@ -2,3 +2,4 @@ src/
 *.tgz
 tsconfig.json
 examples
+yarn-error.log
