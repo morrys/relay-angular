@@ -2,6 +2,7 @@ import * as areEqual from 'fbjs/lib/areEqual';
 import * as invariant from 'fbjs/lib/invariant';
 import * as warning from 'fbjs/lib/warning';
 import {
+    ConnectionMetadata,
     Observer,
     Variables,
     ConnectionInterface,
@@ -21,9 +22,11 @@ import {
     FragmentVariablesGetter,
     FORWARD,
     PaginationData,
+    ConnectionConfig,
+    ObserverOrCallback,
 } from './RelayHooksType';
 
-export type ObserverOrCallback = Observer<void> | ((error: Error) => any);
+export type ReactConnectionMetadata = ConnectionMetadata & { fragmentName: string };
 
 export const isNetworkPolicy = (policy: FetchPolicy, storeSnapshot): boolean => {
     return policy === NETWORK_ONLY || policy === STORE_THEN_NETWORK || (policy === STORE_OR_NETWORK && !storeSnapshot);
@@ -40,12 +43,12 @@ export function createOperation(gqlQuery: GraphQLTaggedNode, variables: Variable
 
 // pagination utils
 
-export function findConnectionMetadata(fragment): any {
+export function findConnectionMetadata(fragment): ReactConnectionMetadata {
     let foundConnectionMetadata = null;
     let isRelayModern = false;
     // for (const fragmentName in fragments) {
     //   const fragment = fragments[fragmentName];
-    const connectionMetadata: Array<any> = fragment.metadata && (fragment.metadata.connection as any);
+    const connectionMetadata: Array<ReactConnectionMetadata> = fragment.metadata && (fragment.metadata.connection as any);
     // HACK: metadata is always set to `undefined` in classic. In modern, even
     // if empty, it is set to null (never undefined). We use that knowlege to
     // check if we're dealing with classic or modern
@@ -73,7 +76,7 @@ export function findConnectionMetadata(fragment): any {
     return foundConnectionMetadata || ({} as any);
 }
 
-export function createGetConnectionFromProps(metadata: any): any {
+export function createGetConnectionFromProps(metadata: ReactConnectionMetadata): any {
     const path = metadata.path;
     invariant(path, 'ReactRelayPaginationContainer: Unable to synthesize a ' + 'getConnectionFromProps function.');
     return (props): any => {
@@ -88,7 +91,7 @@ export function createGetConnectionFromProps(metadata: any): any {
     };
 }
 
-export function createGetFragmentVariables(metadata: any): FragmentVariablesGetter {
+export function createGetFragmentVariables(metadata: ReactConnectionMetadata): FragmentVariablesGetter {
     const countVariable = metadata.count;
     invariant(countVariable, 'ReactRelayPaginationContainer: Unable to synthesize a ' + 'getFragmentVariables function.');
     return (prevVars: Variables, totalCount: number): Variables => ({
@@ -158,7 +161,7 @@ export function getNewSelector(request, s, variables): SingularReaderSelector {
 export function _getConnectionData(
     { direction, getConnectionFromProps: defaultGetConnectionFromProps }: PaginationData,
     props: any,
-    connectionConfig?: any,
+    connectionConfig?: ConnectionConfig,
 ): {
     cursor: string;
     edgeCount: number;

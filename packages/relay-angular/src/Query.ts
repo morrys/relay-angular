@@ -1,5 +1,5 @@
 import { makeQueryDecorator } from './Decorator';
-import QueryFetcher from './QueryFetcher';
+import { QueryFetcher } from './QueryFetcher';
 import { environmentContext } from './RelayProvider';
 import { createOperation } from './Utils';
 
