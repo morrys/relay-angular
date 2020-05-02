@@ -1,5 +1,4 @@
-import { Disposable, CacheConfig, IEnvironment, Snapshot } from 'relay-runtime';
-import { __internal, OperationType } from 'relay-runtime';
+import { Disposable, CacheConfig, IEnvironment, Snapshot, __internal, OperationType } from 'relay-runtime';
 import { FetchPolicy, RenderProps } from './RelayHooksType';
 import { isNetworkPolicy, isStorePolicy } from './Utils';
 
@@ -11,7 +10,7 @@ const cache: Map<string, QueryFetcher<any>> = new Map();
 
 const DATA_RETENTION_TIMEOUT = 30 * 1000;
 
-class QueryFetcher<TOperationType extends OperationType> {
+export class QueryFetcher<TOperationType extends OperationType = OperationType> {
     environment: IEnvironment;
     query: any;
     networkSubscription: Disposable;
@@ -74,7 +73,7 @@ class QueryFetcher<TOperationType extends OperationType> {
             isStorePolicy(fetchPolicy) &&
             (environment.check(operation) === 'available' || environment.check(operation).status === 'available')
         ) {
-            return environment.lookup(operation.fragment, operation);
+            return environment.lookup(operation.fragment);
         }
         return null;
     }
@@ -221,5 +220,3 @@ class QueryFetcher<TOperationType extends OperationType> {
         }
     }
 }
-
-export default QueryFetcher;

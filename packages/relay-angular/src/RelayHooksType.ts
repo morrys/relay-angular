@@ -9,11 +9,11 @@ export const STORE_THEN_NETWORK = 'store-and-network';
 export const STORE_OR_NETWORK = 'store-or-network';
 export const STORE_ONLY = 'store-only';
 
-export type FetchPolicy = 'store-only' | 'store-or-network' | 'store-and-network' | 'network-only';
+export type FetchPolicy = typeof STORE_ONLY | typeof STORE_OR_NETWORK | typeof STORE_THEN_NETWORK | typeof NETWORK_ONLY;
 
 export interface RenderProps<T extends OperationType> {
     error: Error | null;
-    props: T['response'];
+    props: T['response'] | null | undefined;
     retry: (_cacheConfigOverride?: CacheConfig) => void;
     cached?: boolean;
 }
@@ -41,7 +41,7 @@ export type ArrayKeyType = ReadonlyArray<{ readonly ' $data'?: ReadonlyArray<unk
 export type KeyReturnType<T extends KeyType> = (arg: T) => NonNullable<T[' $data']>;
 export type ArrayKeyReturnType<T extends ArrayKeyType> = (arg: T) => NonNullable<NonNullable<T[0]>[' $data']>[0];
 
-export type PaginationFunction = {
+export type PaginationFunction<TVariables extends Variables = Variables> = {
     loadMore: (
         connectionConfig: ConnectionConfig,
         pageSize: number,
@@ -54,23 +54,23 @@ export type PaginationFunction = {
         connectionConfig: ConnectionConfig,
         totalCount: number,
         observerOrCallback: ObserverOrCallback,
-        refetchVariables: Variables,
+        refetchVariables: TVariables,
     ) => Disposable;
 };
 
-export type RefetchableFunction = (
-    refetchVariables: Variables | ((fragmentVariables: Variables) => Variables),
+export type RefetchableFunction<TVariables extends Variables = Variables> = (
+    refetchVariables: TVariables | ((fragmentVariables: TVariables) => TVariables),
     options?: {
-        renderVariables?: Variables;
+        renderVariables?: TVariables;
         observerOrCallback?: ObserverOrCallback;
         refetchOptions?: RefetchOptions;
     },
 ) => Disposable;
 
-export type RefetchFunction = (
+export type RefetchFunction<TVariables extends Variables = Variables> = (
     taggedNode: GraphQLTaggedNode,
-    refetchVariables: Variables | ((fragmentVariables: Variables) => Variables),
-    renderVariables?: Variables,
+    refetchVariables: TVariables | ((fragmentVariables: TVariables) => TVariables),
+    renderVariables?: TVariables,
     observerOrCallback?: ObserverOrCallback,
     options?: RefetchOptions,
 ) => Disposable;
@@ -81,7 +81,7 @@ export type RefetchDecorator<T> = {
 
 export type PaginationDecorator<T> = PaginationFunction & T;
 
-export type ObserverOrCallback = Observer<void> | ((error: Error) => any);
+export type ObserverOrCallback = Observer<void> | ((error?: Error | null | undefined) => void);
 
 // pagination
 
@@ -89,17 +89,18 @@ export const FORWARD = 'forward';
 
 export type FragmentVariablesGetter = (prevVars: Variables, totalCount: number) => Variables;
 
-export type ConnectionConfig = {
+export interface ConnectionData {
+    edges?: ReadonlyArray<any> | null;
+    pageInfo?: Partial<PageInfo> | null;
+}
+
+export interface ConnectionConfig<Props = object> {
     direction?: 'backward' | 'forward';
-    getConnectionFromProps?: (props: object) => ConnectionData;
-    getFragmentVariables?: FragmentVariablesGetter;
-    getVariables: (props: object, paginationInfo: { count: number; cursor: string }, fragmentVariables: Variables) => Variables;
+    getConnectionFromProps?: (props: Props) => ConnectionData | null | undefined;
+    getFragmentVariables?: (prevVars: Variables, totalCount: number) => Variables;
+    getVariables: (props: Props, paginationInfo: { count: number; cursor?: string | null }, fragmentVariables: Variables) => Variables;
     query: GraphQLTaggedNode;
-};
-export type ConnectionData = {
-    edges?: ReadonlyArray<any>;
-    pageInfo?: PageInfo;
-};
+}
 
 export type PaginationData = {
     direction: string;

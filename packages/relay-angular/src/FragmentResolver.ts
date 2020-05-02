@@ -10,7 +10,7 @@ import {
     getFragment,
     Variables,
     getVariablesFromFragment,
-    SingularReaderSelector,
+    ReaderSelector,
     GraphQLTaggedNode,
     Observable,
     Observer,
@@ -20,7 +20,7 @@ import {
     getDataIDsFromFragment,
     __internal,
 } from 'relay-runtime';
-import { RefetchOptions, PaginationData, PAGINATION, REFETCH } from './RelayHooksType';
+import { RefetchOptions, PaginationData, PAGINATION, REFETCH, ConnectionConfig } from './RelayHooksType';
 import { environmentContext } from './RelayProvider';
 import {
     isNetworkPolicy,
@@ -36,8 +36,6 @@ import {
 const { fetchQuery } = __internal;
 
 type SingularOrPluralSnapshot = Snapshot | Array<Snapshot>;
-
-type SingularOrPluralSelectors = SingularReaderSelector | Array<SingularReaderSelector>;
 
 function lookupFragment(environment, selector): SingularOrPluralSnapshot {
     return selector.kind === 'PluralReaderSelector' ? selector.selectors.map((s) => environment.lookup(s)) : environment.lookup(selector);
@@ -55,14 +53,14 @@ type FragmentResult = {
     data: any;
 };
 
-class FragmentResolver {
+export class FragmentResolver {
     _environment: IEnvironment;
     _fragment: any;
     _fragmentNode: any;
     _fragmentRef: any;
     _result: FragmentResult;
     _disposable: Disposable = { dispose: (): void => undefined };
-    _selector: SingularOrPluralSelectors;
+    _selector: ReaderSelector;
     _forceUpdate: any;
     _isPlural: boolean;
     _refetchSubscription: Subscription;
@@ -185,9 +183,8 @@ class FragmentResolver {
 
         const dataSubscriptions: any = [];
 
-        const { snapshot: currentSnapshot } = this._result;
         if (Array.isArray(renderedSnapshot)) {
-            currentSnapshot.forEach((snapshot, idx) => {
+            renderedSnapshot.forEach((snapshot, idx) => {
                 dataSubscriptions.push(
                     environment.subscribe(snapshot, (latestSnapshot) => {
                         this._result.snapshot[idx] = latestSnapshot;
@@ -198,7 +195,7 @@ class FragmentResolver {
             });
         } else {
             dataSubscriptions.push(
-                environment.subscribe(currentSnapshot, (latestSnapshot) => {
+                environment.subscribe(renderedSnapshot, (latestSnapshot) => {
                     this._result = getFragmentResult(latestSnapshot);
                     this.refreshHooks();
                 }),
@@ -227,7 +224,7 @@ class FragmentResolver {
             (environment.check(operation) === 'available' || environment.check(operation).status === 'available')
         ) {
             this._retainCachedOperation(operation);
-            return environment.lookup(operation.fragment, operation);
+            return environment.lookup(operation.fragment);
         }
         return null;
     }
@@ -260,13 +257,7 @@ class FragmentResolver {
             complete();
         };
 
-        const refetchSubscription = this.executeFetcher(taggedNode, fetchVariables, options, observer, onNext);
-
-        return {
-            dispose: (): void => {
-                refetchSubscription && refetchSubscription.unsubscribe();
-            },
-        };
+        return this.executeFetcher(taggedNode, fetchVariables, options, observer, onNext);
     };
 
     // pagination
@@ -275,14 +266,14 @@ class FragmentResolver {
         return !!this._refetchSubscription;
     };
 
-    hasMore = (connectionConfig?: any): boolean => {
+    hasMore = (connectionConfig?: ConnectionConfig): boolean => {
         this.paginationData = getPaginationData(this.paginationData, this._fragment);
         const connectionData = _getConnectionData(this.paginationData, this.getData(), connectionConfig);
         return !!(connectionData && connectionData.hasMore && connectionData.cursor);
     };
 
     refetchConnection = (
-        connectionConfig: any,
+        connectionConfig: ConnectionConfig,
         totalCount: number,
         observerOrCallback: ObserverOrCallback,
         refetchVariables: Variables,
@@ -295,12 +286,15 @@ class FragmentResolver {
             cursor: null,
             totalCount,
         };
-        const fetch = this._fetchPage(connectionConfig, paginatingVariables, toObserver(observerOrCallback), { force: true });
-
-        return { dispose: fetch.unsubscribe };
+        return this._fetchPage(connectionConfig, paginatingVariables, toObserver(observerOrCallback), { force: true });
     };
 
-    loadMore = (connectionConfig: any, pageSize: number, observerOrCallback: ObserverOrCallback, options: RefetchOptions): Disposable => {
+    loadMore = (
+        connectionConfig: ConnectionConfig,
+        pageSize: number,
+        observerOrCallback: ObserverOrCallback,
+        options: RefetchOptions,
+    ): Disposable => {
         this.paginationData = getPaginationData(this.paginationData, this._fragment);
 
         const observer = toObserver(observerOrCallback);
@@ -327,12 +321,11 @@ class FragmentResolver {
             cursor: cursor,
             totalCount,
         };
-        const fetch = this._fetchPage(connectionConfig, paginatingVariables, observer, options);
-        return { dispose: fetch.unsubscribe };
+        return this._fetchPage(connectionConfig, paginatingVariables, observer, options);
     };
 
     _fetchPage(
-        connectionConfig: any,
+        connectionConfig: ConnectionConfig,
         paginatingVariables: {
             count: number;
             cursor: string | null;
@@ -340,7 +333,7 @@ class FragmentResolver {
         },
         observer: Observer<void>,
         options: RefetchOptions,
-    ): Subscription {
+    ): Disposable {
         //const { componentRef: _, __relayContext, ...restProps } = this.props;
         //const resolver = prevResult.resolver;
         //const fragments = prevResult.resolver._fragments;
@@ -412,7 +405,7 @@ class FragmentResolver {
         options: RefetchOptions,
         observerOrCallback: ObserverOrCallback,
         onNext: (operation, payload, complete) => void,
-    ): Subscription {
+    ): Disposable {
         const cacheConfig: CacheConfig = options ? { force: !!options.force } : undefined;
         if (cacheConfig != null && options && options.metadata != null) {
             cacheConfig.metadata = options.metadata;
@@ -447,7 +440,7 @@ class FragmentResolver {
 
         // Declare refetchSubscription before assigning it in .start(), since
         // synchronous completion may call callbacks .subscribe() returns.
-        let refetchSubscription;
+        let refetchSubscription: Subscription;
 
         const isNetwork = isNetworkPolicy(fetchPolicy, storeSnapshot);
         if (!isNetwork) {
@@ -501,11 +494,13 @@ class FragmentResolver {
                 });
         }
 
-        return refetchSubscription;
+        return {
+            dispose: (): void => {
+                refetchSubscription && refetchSubscription.unsubscribe();
+            },
+        };
     }
 }
-
-export default FragmentResolver;
 
 export const resolverDecorator = (
     decoratorName,
