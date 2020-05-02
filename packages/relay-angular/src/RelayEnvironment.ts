@@ -11,16 +11,20 @@ export const RelayEnvironment = makeGenericsDecorator('RelayEnvironment', (_decN
             forceUpdate();
         }
     });
-    const init = (_props, decForceUpdate): any => {
-        first = false;
-        forceUpdate = decForceUpdate;
+    const update = (_props, decForceUpdate): any => {
+        if (forceUpdate) {
+            first = false;
+            forceUpdate = decForceUpdate;
+        }
+
         return environment;
     };
     const dispose = (): void => {
         subscription.unsubscribe();
     };
     return {
-        init,
+        init: update,
+        update,
         dispose,
     };
 });
