@@ -1,0 +1,13 @@
+<section class="main" *ngIf="data.todos && data.todos.edges.length > 0">
+  <input [checked]="data.totalCount === data.completedCount"
+  (change)="handleMarkAllChange($event)"
+  class="toggle-all"
+  type="checkbox">
+  <ul class="todo-list">
+    <li *ngFor="let todo of data.todos.edges" [class.completed]="todo.node.complete">
+      <app-todo-list-item
+        [fragmentRef]="todo.node"
+        [fragmentRefUser]="data"></app-todo-list-item>
+    </li>
+  </ul>
+</section>
