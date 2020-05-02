@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EnvironmentContext } from 'relay-angular';
+import { EnvironmentContext, Restore } from 'relay-angular';
 import EnvironmentError from '../relay/errorRelay';
 import EnvironmentRight from '../relay/relay';
 
@@ -10,6 +10,9 @@ import EnvironmentRight from '../relay/relay';
 })
 export class AppComponent {
     user = 'me';
+
+    @Restore()
+    rehydrated: boolean;
 
     constructor(private environmentContext: EnvironmentContext) {}
 
