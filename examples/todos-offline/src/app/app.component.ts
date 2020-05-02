@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { EnvironmentContext, Restore } from 'relay-angular';
-import EnvironmentError from '../relay/errorRelay';
+import EnvironmentError from '../relay/localStorageRelay';
 import EnvironmentRight from '../relay/relay';
 
 @Component({

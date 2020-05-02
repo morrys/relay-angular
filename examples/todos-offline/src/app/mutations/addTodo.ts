@@ -51,11 +51,13 @@ function commit(text: string, user: any): any {
         optimisticUpdater: (store: any) => {
             const id = 'client:newTodo:' + tempID++;
             const node = store.create(id, 'Todo');
+            node.setValue(false, 'complete');
             node.setValue(text, 'text');
             node.setValue(id, 'id');
 
             const newEdge = store.create('client:newEdge:' + tempID++, 'TodoEdge');
             newEdge.setLinkedRecord(node, 'node');
+            newEdge.setValue(null, 'cursor');
             sharedUpdater(store, user, newEdge);
 
             // Get the UserProxy, and update the totalCount
