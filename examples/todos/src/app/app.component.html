@@ -3,7 +3,7 @@
     <button [ngClass]="{'border': user==='me'}" class="userButton" (click)="onChangeUser('me')">ME</button>
     <button [ngClass]="{'border': user==='you'}" class="userButton" (click)="onChangeUser('you')">YOU</button>
     </div>
-  <todo-query [userId]="user" *ngIf="rehydrated; else loading">
+  <todo-query [userId]="user">
   </todo-query>
   <footer class="headerButton">
     <button 
@@ -18,6 +18,3 @@
   </button>
 </footer>
 </section>
-<ng-template #loading>
-  <div>Loading...</div>
- </ng-template>

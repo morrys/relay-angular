@@ -1,5 +1,5 @@
 {
-  "name": "todosoffline",
+  "name": "todos",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -27,9 +27,7 @@
     "relay-angular-plugin": "0.0.1",
     "graphql-relay": "^0.6.0",
     "graphql": "^14.2.0",
-    "relay-runtime": "8.0.0",
-    "@wora/relay-offline": "3.2.0",
-    "@wora/relay-store": "3.2.0"
+    "relay-runtime": "8.0.0"
   },
   "devDependencies": {
     "babel-loader": "^8.0.5",
