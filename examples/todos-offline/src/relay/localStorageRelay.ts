@@ -20,8 +20,7 @@ async function fetchQuery(operation, variables, cacheConfig, uploadables) {
 const network = Network.create(fetchQuery);
 export const manualExecution = false;
 
-//const environment = EnvironmentIDB.create({network}, offlineOptions); //, {ttl: 60 * 1000}
-
+//const environment = EnvironmentIDB.
 const recordSource = new RecordSource();
 const store = new Store(recordSource);
 const environment = new Environment({ network, store });

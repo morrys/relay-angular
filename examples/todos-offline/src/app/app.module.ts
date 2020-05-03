@@ -9,7 +9,7 @@ import { TodoListFooterComponent } from './todo-list-footer/todo-list-footer.com
 import { TodoListHeaderComponent } from './todo-list-header/todo-list-header.component';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 
-import RelayModernEnvironment from '../relay/relay';
+import environment from '../relay/relay';
 import { RelayProvider } from 'relay-angular';
 import { TodoQueryComponent } from './todo-query/todo-query.component';
 
@@ -24,7 +24,7 @@ import { TodoQueryComponent } from './todo-query/todo-query.component';
         TodoListItemComponent,
     ],
     imports: [BrowserModule, FormsModule],
-    providers: [[RelayProvider(RelayModernEnvironment)]],
+    providers: [[RelayProvider(environment)]],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

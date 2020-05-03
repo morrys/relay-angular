@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { EnvironmentContext, Restore } from 'relay-angular';
-import EnvironmentError from '../relay/localStorageRelay';
-import EnvironmentRight from '../relay/relay';
+import environmentLocal from '../relay/localStorageRelay';
+import environmentIDX from '../relay/relay';
 
 @Component({
     selector: 'app-root',
@@ -21,10 +21,10 @@ export class AppComponent {
     }
 
     handleRightEnv() {
-        this.environmentContext.next(EnvironmentRight);
+        this.environmentContext.next(environmentIDX);
     }
 
     handleWrongEnv() {
-        this.environmentContext.next(EnvironmentError);
+        this.environmentContext.next(environmentLocal);
     }
 }
