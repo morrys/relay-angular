@@ -3,40 +3,13 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Collection of libraries usable for the web, react and react-native.",
+    "tagline": "Collection of libraries usable for relay-angular.",
     "docs": {
-      "apollo-cache": {
-        "title": "Apollo Cache"
+      "offline": {
+        "title": "Getting Started"
       },
-      "cache-persist": {
-        "title": "Cache Persist"
-      },
-      "relay-store": {
-        "title": "Relay Store"
-      },
-      "detect-network": {
-        "title": "Detect Network"
-      },
-      "netinfo": {
-        "title": "NetInfo"
-      },
-      "apollo-offline": {
-        "title": "Apollo Offline"
-      },
-      "architecture": {
-        "title": "Offline Architecture"
-      },
-      "offline-first": {
-        "title": "Offline First"
-      },
-      "relay-offline": {
-        "title": "Relay Offline"
-      },
-      "thinking-offline": {
-        "title": "Thinking Offline"
-      },
-      "introduction": {
-        "title": "wora"
+      "relay-angular": {
+        "title": "Getting Started"
       }
     },
     "links": {
@@ -44,10 +17,8 @@
       "GitHub": "GitHub"
     },
     "categories": {
-      "wora": "wora",
-      "caching": "caching",
-      "networking": "networking",
-      "offline": "offline"
+      "Relay Angular": "Relay Angular",
+      "Relay Angular Offline": "Relay Angular Offline"
     }
   },
   "pages-strings": {
