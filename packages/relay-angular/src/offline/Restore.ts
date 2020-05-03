@@ -12,14 +12,14 @@ export const Restore = makeGenericsDecorator('Restore', (_decName) => {
         }
     });
     const update = (_props, decForceUpdate): any => {
-        if (forceUpdate) {
+        if (decForceUpdate) {
             first = false;
             forceUpdate = decForceUpdate;
         }
         if (environment != null) {
             const rehydrated = environment.isRehydrated();
             if (!rehydrated) {
-                environment.hydrate().then(forceUpdate);
+                setTimeout(() => environment.hydrate().then(forceUpdate), 0);
             }
             return rehydrated;
         }
