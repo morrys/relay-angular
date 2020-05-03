@@ -1,0 +1,13 @@
+  <todo-app *ngIf="result && result.props && result.props.user; else loading"
+  [fragmentRef]="result.props.user">
+  {{result}}
+  </todo-app>
+  <ng-template #loading>
+    <div *ngIf="!result.error; else error">
+      Loading...</div>
+   </ng-template>
+   <ng-template #error>
+    <div>
+      Error {{ result.error }}
+    </div>
+   </ng-template>

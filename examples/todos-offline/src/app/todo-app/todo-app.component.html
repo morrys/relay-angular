@@ -1,0 +1,13 @@
+<section class="todoapp">
+  <app-todo-list-header
+    (add)="onAddTodo($event)"
+  ></app-todo-list-header>
+  <div>
+  <app-todo-list
+    [fragmentRef]="user"
+  ></app-todo-list>
+  <app-todo-list-footer
+    [fragmentRef]="user"
+  ></app-todo-list-footer>
+</div>
+</section>

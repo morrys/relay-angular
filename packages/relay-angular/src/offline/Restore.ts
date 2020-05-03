@@ -1,24 +1,29 @@
-import { makeGenericsDecorator } from './Decorator';
-import { environmentContext } from './RelayProvider';
+import { makeGenericsDecorator } from '../Decorator';
+import { environmentContext } from '../RelayProvider';
 
-export const RelayEnvironment = makeGenericsDecorator('RelayEnvironment', (_decName) => {
+export const Restore = makeGenericsDecorator('Restore', (_decName) => {
     let environment: any = null;
     let first = true;
     let forceUpdate;
     const subscription = environmentContext.subscribe((env) => {
-        //environment && environment.dispose && environment.dispose();
         environment = env;
         if (!first && forceUpdate) {
             forceUpdate();
         }
     });
     const update = (_props, decForceUpdate): any => {
-        if (forceUpdate) {
+        if (decForceUpdate) {
             first = false;
             forceUpdate = decForceUpdate;
         }
-
-        return environment;
+        if (environment != null) {
+            const rehydrated = environment.isRehydrated();
+            if (!rehydrated) {
+                setTimeout(() => environment.hydrate().then(forceUpdate), 0);
+            }
+            return rehydrated;
+        }
+        return false;
     };
     const dispose = (): void => {
         subscription.unsubscribe();
