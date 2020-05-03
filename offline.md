@@ -186,7 +186,7 @@ const environment = new Environment({ network, store }, persistOfflineOptions);
 
 [CacheOptions](https://morrys.github.io/wora/docs/cache-persist.html#cache-options)
 
-## Store with custom options
+### Store with custom options
 
 ```ts
 import { Store } from "react-relay-offline";
