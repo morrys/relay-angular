@@ -8037,15 +8037,15 @@ regjsparser@^0.6.4:
   dependencies:
     jsesc "~0.5.0"
 
-relay-angular-plugin@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/relay-angular-plugin/-/relay-angular-plugin-0.0.1.tgz#ade34d71eb4a2ad3dede35ab9e0955f7c3e0861c"
-  integrity sha512-7igrVPLEKOFvsSl5C83BoFNt75ZwwSdsfNwrkeTd9k8KFR9V5/P9h8n2I0QKt98gcDPSzas0VdOlgmalovUWuw==
+relay-angular-plugin@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/relay-angular-plugin/-/relay-angular-plugin-0.0.2.tgz#b7f3f5472f3f2014852f02c2c4f42f344a99f73b"
+  integrity sha512-kIzqGO862TRlOhkEofgbxXo7FwNhyTgmHxTa7sHoEEY1DzmQwuHSv1S4khVe5MkCRHd0o3a8UVEC+7mcFDpcYA==
 
-relay-angular@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/relay-angular/-/relay-angular-0.1.0.tgz#7058faadc1c0c8c615b4b7bf943b078184f08e3f"
-  integrity sha512-D5CEvk8b1eUgvuWNlkOpPvZoNJYqB0umeNP0rJ9RrNnfyknRK8fwnax3O6mH3S+gML3gp4MXllwpEcBtexpk1Q==
+relay-angular@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/relay-angular/-/relay-angular-0.2.0.tgz#b6e211124bc26fa052a6d7b23e2945cbfe8a37f4"
+  integrity sha512-x6LszI0d1Aw03ypiGxtpNeJ+C/RhP9pT11ancaN38u3U/k3Tpgd0JyY+yuVcy0SeJyIYjNXTMVcwvZMIy+1SWg==
   dependencies:
     fbjs "^1.0.0"
 
