@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Fragment } from 'relay-angular';
 import { graphql } from 'relay-runtime';
-import { Todo } from '../todo';
 import { todoListItem_todo$key, todoListItem_todo$data } from '../../__generated__/relay/todoListItem_todo.graphql';
 import changeTodoStatus from '../mutations/changeTodoStatus';
 import removeTodo from '../mutations/removeTodo';
@@ -35,7 +34,7 @@ export class TodoListItemComponent {
     @Input()
     fragmentRefUser;
 
-    @Fragment<todoListItem_todo$key>(function() {
+    @Fragment<todoListItem_todo$key>(function () {
         return {
             fragmentNode,
             fragmentRef: this.fragmentRef,
@@ -43,7 +42,7 @@ export class TodoListItemComponent {
     })
     todo: todoListItem_todo$data;
 
-    @Fragment(function() {
+    @Fragment(function () {
         return {
             fragmentNode: fragmentNodeUser,
             fragmentRef: this.fragmentRefUser,
@@ -55,7 +54,7 @@ export class TodoListItemComponent {
         changeTodoStatus.commit(!this.todo.complete, this.todo, this.user);
     }
 
-    removeTodo(todo: Todo) {
+    removeTodo(todo: any) {
         removeTodo.commit(todo, this.user);
     }
 }

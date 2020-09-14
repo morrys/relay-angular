@@ -2,13 +2,13 @@
   <span class="todo-count"><strong>{{data.totalCount - data.completedCount}}</strong> {{data.totalCount - data.completedCount == 1 ? 'item' : 'items'}} left</span>
   <button 
           class="clear-completed"
-          (click)="handleRefresh($event)">
+          (click)="handleRefresh()">
           Refresh
   </button>
   <button 
           class="clear-completed"
           [disabled]="data.completedCount == 0"
-          (click)="handleRemoveCompletedTodosClick($event)">
+          (click)="handleRemoveCompletedTodosClick()">
           Clear completed
   </button>
 </footer>

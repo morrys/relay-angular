@@ -17,12 +17,16 @@
         "build": {
           "builder": "ngx-build-plus:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "relay-runtime",
+              "relay-angular"
+           ],
             "outputPath": "dist/todos",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"

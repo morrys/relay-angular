@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { graphql } from 'relay-runtime';
-import { Query } from 'relay-angular';
+import { Query, RenderProps } from 'relay-angular';
 import { todoQueryQuery } from '../../__generated__/relay/todoQueryQuery.graphql';
 
 export const QueryApp = graphql`
@@ -21,11 +21,11 @@ export class TodoQueryComponent {
     @Input()
     userId;
 
-    @Query<todoQueryQuery>(function() {
+    @Query<todoQueryQuery>(function () {
         return {
             query: QueryApp,
             variables: { userId: this.userId },
         };
     })
-    result;
+    result: RenderProps<todoQueryQuery>;
 }
