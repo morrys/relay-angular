@@ -13,8 +13,8 @@ const DATA_RETENTION_TIMEOUT = 30 * 1000;
 export class QueryFetcher<TOperationType extends OperationType = OperationType> {
     environment: IEnvironment;
     query: any;
-    networkSubscription: Disposable;
-    rootSubscription: Disposable;
+    networkSubscription: Disposable | null;
+    rootSubscription: Disposable | null;
     error: Error | null;
     snapshot: Snapshot;
     fetchPolicy: FetchPolicy;
@@ -68,9 +68,9 @@ export class QueryFetcher<TOperationType extends OperationType = OperationType> 
         return environment !== this.environment || query.request.identifier !== this.query.request.identifier;
     }
 
-    lookupInStore(environment: IEnvironment, operation, fetchPolicy: FetchPolicy): Snapshot {
+    lookupInStore(environment: IEnvironment, operation, fetchPolicy: FetchPolicy): Snapshot | null {
         if (isStorePolicy(fetchPolicy)) {
-            const check = environment.check(operation);
+            const check: any = environment.check(operation);
             if (check === 'available' || check.status === 'available') {
                 return environment.lookup(operation.fragment);
             }
@@ -161,7 +161,7 @@ export class QueryFetcher<TOperationType extends OperationType = OperationType> 
             },
             error: (error) => {
                 this.error = error;
-                this.snapshot = null;
+                (this.snapshot as any) = null;
                 if (fetchHasReturned && !suspense) {
                     this.forceUpdate(error);
                 }
@@ -190,7 +190,7 @@ export class QueryFetcher<TOperationType extends OperationType = OperationType> 
 
     disposeRequest(): void {
         this.error = null;
-        this.snapshot = null;
+        (this.snapshot as any) = null;
         if (this.networkSubscription) {
             this.networkSubscription.dispose();
             this.networkSubscription = null;

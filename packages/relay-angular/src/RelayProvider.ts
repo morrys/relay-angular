@@ -1,7 +1,7 @@
 import { Environment } from 'relay-runtime';
 import { BehaviorSubject } from 'rxjs';
 
-export class EnvironmentContext extends BehaviorSubject<Environment> {}
+export class EnvironmentContext extends BehaviorSubject<Environment | null> {}
 
 export const environmentContext = new EnvironmentContext(null);
 

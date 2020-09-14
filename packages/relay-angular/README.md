@@ -15,6 +15,8 @@ Install relay-compiler using yarn or npm:
 yarn add relay-angular-plugin ngx-build-plus relay-compiler relay-config
 ```
 
+## [Documentation](https://morrys.github.io/relay-angular/docs/relay-angular)
+
 ## Contributing
 
 * **Give a star** to the repository and **share it**, you will **help** the **project** and the **people** who will find it useful

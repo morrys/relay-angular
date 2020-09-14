@@ -1,6 +1,6 @@
 {
   "name": "relay-angular",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "keywords": [
     "relay",
     "angular",
@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "rxjs": "~6.4.0",
-    "relay-runtime": "^9.0.0"
+    "relay-runtime": "^9.0.0",
+    "@types/relay-runtime": "9.1.6"
   }
 }
