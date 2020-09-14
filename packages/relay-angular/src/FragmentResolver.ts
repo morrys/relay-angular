@@ -19,6 +19,8 @@ import {
     Subscription,
     getDataIDsFromFragment,
     __internal,
+    PluralReaderSelector,
+    Environment,
 } from 'relay-runtime';
 import { RefetchOptions, PaginationData, PAGINATION, REFETCH, ConnectionConfig } from './RelayHooksType';
 import { environmentContext } from './RelayProvider';
@@ -63,12 +65,12 @@ export class FragmentResolver {
     _selector: ReaderSelector;
     _forceUpdate: any;
     _isPlural: boolean;
-    _refetchSubscription: Subscription;
+    _refetchSubscription: Subscription | null;
     paginationData: PaginationData;
     _refetchVariables: Variables;
     _isARequestInFlight = false;
     _selectionReferences: Array<Disposable> = [];
-    _cacheSelectionReference: Disposable;
+    _cacheSelectionReference: Disposable | null;
     indexUpdate = 0;
 
     constructor(forceUpdate = (): void => undefined) {
@@ -187,15 +189,15 @@ export class FragmentResolver {
             renderedSnapshot.forEach((snapshot, idx) => {
                 dataSubscriptions.push(
                     environment.subscribe(snapshot, (latestSnapshot) => {
-                        this._result.snapshot[idx] = latestSnapshot;
-                        this._result.data[idx] = latestSnapshot.data;
+                        (this._result as any).snapshot[idx] = latestSnapshot;
+                        (this._result as any).data[idx] = latestSnapshot.data;
                         this.refreshHooks();
                     }),
                 );
             });
         } else {
             dataSubscriptions.push(
-                environment.subscribe(renderedSnapshot, (latestSnapshot) => {
+                environment.subscribe(renderedSnapshot as Snapshot, (latestSnapshot) => {
                     this._result = getFragmentResult(latestSnapshot);
                     this.refreshHooks();
                 }),
@@ -211,7 +213,9 @@ export class FragmentResolver {
 
     changeVariables(variables, request): void {
         if (this._selector.kind === 'PluralReaderSelector') {
-            this._selector.selectors = this._selector.selectors.map((s) => getNewSelector(request, s, variables));
+            (this._selector as any).selectors = (this._selector as PluralReaderSelector).selectors.map((s) =>
+                getNewSelector(request, s, variables),
+            );
         } else {
             this._selector = getNewSelector(request, this._selector, variables);
         }
@@ -220,7 +224,7 @@ export class FragmentResolver {
 
     lookupInStore(environment: IEnvironment, operation, fetchPolicy): Snapshot | null {
         if (isStorePolicy(fetchPolicy)) {
-            const check = environment.check(operation);
+            const check: any = environment.check(operation);
             if (check === 'available' || check.status === 'available') {
                 this._retainCachedOperation(operation);
                 return environment.lookup(operation.fragment);
@@ -242,7 +246,7 @@ export class FragmentResolver {
         const newFragmentVariables = renderVariables ? { ...fetchVariables, ...renderVariables } : fetchVariables;
 
         /*eslint-disable */
-        const observer =
+        const observer: any =
             typeof observerOrCallback === 'function'
                 ? {
                       next: observerOrCallback,
@@ -302,11 +306,11 @@ export class FragmentResolver {
 
         if (!connectionData) {
             Observable.create((sink) => sink.complete()).subscribe(observer);
-            return null;
+            return { dispose: (): void => undefined };
         }
         const totalCount = connectionData.edgeCount + pageSize;
         if (options && options.force) {
-            return this.refetchConnection(connectionConfig, totalCount, observerOrCallback, undefined);
+            return this.refetchConnection(connectionConfig, totalCount, observerOrCallback, {});
         }
         //const { END_CURSOR, START_CURSOR } = ConnectionInterface.get();
         const cursor = connectionData.cursor;
@@ -406,13 +410,13 @@ export class FragmentResolver {
         observerOrCallback: ObserverOrCallback,
         onNext: (operation, payload, complete) => void,
     ): Disposable {
-        const cacheConfig: CacheConfig = options ? { force: !!options.force } : undefined;
+        const cacheConfig: CacheConfig | undefined = options ? { force: !!options.force } : undefined;
         if (cacheConfig != null && options && options.metadata != null) {
             cacheConfig.metadata = options.metadata;
         }
 
         /*eslint-disable */
-        const observer =
+        const observer: any =
             typeof observerOrCallback === 'function'
                 ? {
                       next: observerOrCallback,
@@ -473,7 +477,7 @@ export class FragmentResolver {
                 .mergeMap((payload) => {
                     return Observable.create((sink) => {
                         onNext(operation, payload, () => {
-                            sink.next(); // pass void to public observer's `next`
+                            sink.next(undefined); // pass void to public observer's `next`
                             sink.complete();
                         });
                     });
@@ -510,7 +514,7 @@ export const resolverDecorator = (
     dispose: () => void;
 } => {
     const resolver = new FragmentResolver();
-    let environment = null;
+    let environment: Environment | null = null;
     let first = true;
     const subscription = environmentContext.subscribe((env) => {
         environment = env;
@@ -523,7 +527,7 @@ export const resolverDecorator = (
             first = false;
             resolver.setForceUpdate(forceUpdate);
         }
-        resolver.resolve(environment, props.fragmentNode || props.fragmentNode, props.fragmentRef);
+        resolver.resolve(environment as Environment, props.fragmentNode || props.fragmentNode, props.fragmentRef);
         const data = resolver.getData();
         if (data) {
             switch (decoratorName) {

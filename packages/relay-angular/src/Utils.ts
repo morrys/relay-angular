@@ -44,7 +44,7 @@ export function createOperation(gqlQuery: GraphQLTaggedNode, variables: Variable
 // pagination utils
 
 export function findConnectionMetadata(fragment): ReactConnectionMetadata {
-    let foundConnectionMetadata = null;
+    let foundConnectionMetadata: any = null;
     let isRelayModern = false;
     // for (const fragmentName in fragments) {
     //   const fragment = fragments[fragmentName];
@@ -81,11 +81,11 @@ export function createGetConnectionFromProps(metadata: ReactConnectionMetadata):
     invariant(path, 'ReactRelayPaginationContainer: Unable to synthesize a ' + 'getConnectionFromProps function.');
     return (props): any => {
         let data = props;
-        for (let i = 0; i < path.length; i++) {
+        for (let i = 0; i < (path as string[]).length; i++) {
             if (!data || typeof data !== 'object') {
                 return null;
             }
-            data = data[path[i]];
+            data = data[(path as string[])[i]];
         }
         return data;
     };
@@ -96,7 +96,7 @@ export function createGetFragmentVariables(metadata: ReactConnectionMetadata): F
     invariant(countVariable, 'ReactRelayPaginationContainer: Unable to synthesize a ' + 'getFragmentVariables function.');
     return (prevVars: Variables, totalCount: number): Variables => ({
         ...prevVars,
-        [countVariable]: totalCount,
+        [countVariable as string]: totalCount,
     });
 }
 
@@ -127,7 +127,7 @@ export function getPaginationData(paginationData, fragment): PaginationData {
         const getFragmentVariables = createGetFragmentVariables(metadata);
 
         return {
-            direction,
+            direction: direction as string,
             getConnectionFromProps,
             getFragmentVariables,
         };
