@@ -4,15 +4,13 @@ import { graphql } from 'relay-runtime';
 import markAllTodosMutation from '../mutations/markAllTodosMutation';
 
 const fragmentNode = graphql`
-    fragment todoList_user on User {
+    fragment todoList_user on User @argumentDefinitions(first: { type: "Int", defaultValue: 2147483647 }, cursor: { type: "String" }) {
         id
         userId
         totalCount
         completedCount
         ...todoListItem_user
-        todos(
-            first: 2147483647 # max GraphQLInt
-        ) @connection(key: "TodoList_todos") {
+        todos(first: $first, after: $cursor) @connection(key: "TodoList_todos") {
             edges {
                 node {
                     id

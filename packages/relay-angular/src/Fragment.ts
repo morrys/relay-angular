@@ -1,5 +1,5 @@
 import { makeFragmentsDecorator } from './Decorator';
 import { resolverDecorator } from './FragmentResolver';
-import { FRAGMENT } from './RelayHooksType';
+import { FRAGMENT_NAME } from './RelayHooksTypes';
 
-export const Fragment = makeFragmentsDecorator(FRAGMENT, resolverDecorator);
+export const Fragment = makeFragmentsDecorator(FRAGMENT_NAME, resolverDecorator);

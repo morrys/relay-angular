@@ -1,4 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,34 +19,35 @@ export type todoListItem_todo$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "todoListItem_todo",
-  "type": "Todo",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "todoListItem_todo",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "complete",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "id",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "text",
       "args": null,
+      "kind": "ScalarField",
+      "name": "text",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "Todo",
+  "abstractKey": null
 };
 (node as any).hash = 'e72674c747efa2397f6915e4d1ed05a3';
 export default node;

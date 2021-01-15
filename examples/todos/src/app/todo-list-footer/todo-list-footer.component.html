@@ -1,5 +1,5 @@
-<footer class="footer" *ngIf="data.todos && data.todos.edges.length > 0">
-  <span class="todo-count"><strong>{{data.totalCount - data.completedCount}}</strong> {{data.totalCount - data.completedCount == 1 ? 'item' : 'items'}} left</span>
+<footer class="footer" *ngIf="result.data.todos && result.data.todos.edges.length > 0">
+  <span class="todo-count"><strong>{{result.data.totalCount - result.data.completedCount}}</strong> {{result.data.totalCount - result.data.completedCount == 1 ? 'item' : 'items'}} left</span>
   <button 
           class="clear-completed"
           (click)="handleRefresh()">
@@ -7,7 +7,7 @@
   </button>
   <button 
           class="clear-completed"
-          [disabled]="data.completedCount == 0"
+          [disabled]="result.data.completedCount == 0"
           (click)="handleRemoveCompletedTodosClick()">
           Clear completed
   </button>

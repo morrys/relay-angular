@@ -1,8 +1,7 @@
 import { makeQueryDecorator } from './Decorator';
 import { QueryFetcher } from './QueryFetcher';
-import { STORE_ONLY } from './RelayHooksType';
+import { STORE_ONLY } from './RelayHooksTypes';
 import { environmentContext } from './RelayProvider';
-import { createOperation } from './Utils';
 
 export const Query = makeQueryDecorator('Query', (_decoratorName) => {
     const queryFetcher = new QueryFetcher();
@@ -11,7 +10,8 @@ export const Query = makeQueryDecorator('Query', (_decoratorName) => {
     const subscription = environmentContext.subscribe((env) => {
         environment = env;
         if (!first) {
-            queryFetcher.refreshHooks();
+            queryFetcher.resolveEnvironment(environment);
+            queryFetcher.forceUpdate && queryFetcher.forceUpdate();
         }
     });
     const update = (props, forceUpdate: () => undefined): any => {
@@ -19,18 +19,11 @@ export const Query = makeQueryDecorator('Query', (_decoratorName) => {
             first = false;
             queryFetcher.setForceUpdate(forceUpdate);
         }
-        const memoVariables = props.variables;
-        const operation = createOperation(props.query, memoVariables);
         const options = props.options || {};
-        const { ttl } = options;
         const isOnline = !environment.isOnline || environment.isOnline();
         options.fetchPolicy = isOnline ? options.fetchPolicy : STORE_ONLY;
-        return queryFetcher.execute(
-            environment,
-            operation,
-            options,
-            (environment, query) => environment.retain(query, { ttl }), // TODO new directive
-        );
+        queryFetcher.resolve(environment, props.query, props.variables, options);
+        return queryFetcher.getData();
     };
     const dispose = (): void => {
         subscription.unsubscribe();

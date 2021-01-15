@@ -1,11 +1,12 @@
 /* tslint:disable */
-/* @relayHash 20a10cdb5aea84619469d5a5a81f03f0 */
+/* eslint-disable */
+// @ts-nocheck
 
 import { ConcreteRequest } from "relay-runtime";
 export type RemoveTodoInput = {
-    readonly id: string;
-    readonly userId: string;
-    readonly clientMutationId?: string | null;
+    id: string;
+    userId: string;
+    clientMutationId?: string | null;
 };
 export type removeTodoMutationVariables = {
     input: RemoveTodoInput;
@@ -44,10 +45,9 @@ mutation removeTodoMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "RemoveTodoInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -58,107 +58,109 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "deletedTodoId",
   "args": null,
+  "kind": "ScalarField",
+  "name": "deletedTodoId",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "completedCount",
   "args": null,
+  "kind": "ScalarField",
+  "name": "completedCount",
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "totalCount",
   "args": null,
+  "kind": "ScalarField",
+  "name": "totalCount",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "removeTodoMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "removeTodoMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "removeTodo",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "RemoveTodoPayload",
+        "kind": "LinkedField",
+        "name": "removeTodo",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "user",
-            "storageKey": null,
             "args": null,
             "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "user",
             "plural": false,
             "selections": [
               (v3/*: any*/),
               (v4/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "removeTodoMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "removeTodo",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "RemoveTodoPayload",
+        "kind": "LinkedField",
+        "name": "removeTodo",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "user",
-            "storageKey": null,
             "args": null,
             "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "user",
             "plural": false,
             "selections": [
               (v3/*: any*/),
               (v4/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "removeTodoMutation",
+    "cacheID": "a76fe4654fbc5e0448e98116c277178c",
     "id": null,
-    "text": "mutation removeTodoMutation(\n  $input: RemoveTodoInput!\n) {\n  removeTodo(input: $input) {\n    deletedTodoId\n    user {\n      completedCount\n      totalCount\n      id\n    }\n  }\n}\n",
-    "metadata": {}
+    "metadata": {},
+    "name": "removeTodoMutation",
+    "operationKind": "mutation",
+    "text": "mutation removeTodoMutation(\n  $input: RemoveTodoInput!\n) {\n  removeTodo(input: $input) {\n    deletedTodoId\n    user {\n      completedCount\n      totalCount\n      id\n    }\n  }\n}\n"
   }
 };
 })();

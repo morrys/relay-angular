@@ -1,18 +1,19 @@
 import { Component, Input } from '@angular/core';
-import { Refetch, RefetchDecorator } from 'relay-angular';
+import { Refetch, ReturnTypeRefetchNode } from 'relay-angular';
 import { graphql } from 'relay-runtime';
 import removeCompletedTodosMutation from '../mutations/removeCompletedTodosMutation';
-import { todoListFooter_user$data } from '../../__generated__/relay/todoListFooter_user.graphql';
+import { todoListFooter_user$data, todoListFooter_user$key } from '../../__generated__/relay/todoListFooter_user.graphql';
 import { QueryApp } from '../todo-query/todo-query.component';
+import { UserFragmentRefetchQuery } from 'src/__generated__/relay/UserFragmentRefetchQuery.graphql';
 
 const fragmentNode = graphql`
-    fragment todoListFooter_user on User {
+    fragment todoListFooter_user on User
+        @refetchable(queryName: "UserFragmentRefetchQuery")
+        @argumentDefinitions(first: { type: "Int", defaultValue: 2147483647 }, cursor: { type: "String" }) {
         id
         userId
         completedCount
-        todos(
-            first: 2147483647 # max GraphQLInt
-        ) @connection(key: "TodoList_todos") {
+        todos(first: $first, after: $cursor) @connection(key: "TodoList_todos") {
             edges {
                 node {
                     id
@@ -37,17 +38,17 @@ export class TodoListFooterComponent {
         fragmentNode,
         fragmentRef: _this.fragmentRef,
     }))
-    data: RefetchDecorator<todoListFooter_user$data>;
+    result: ReturnTypeRefetchNode<UserFragmentRefetchQuery, todoListFooter_user$key, todoListFooter_user$data>;
 
     handleRefresh() {
-        const { refetch, userId } = this.data;
-        refetch(QueryApp, {
-            userId,
-        });
+        const { refetch } = this.result;
+        refetch({});
     }
 
     handleRemoveCompletedTodosClick() {
-        const { todos, id, userId } = this.data;
+        const {
+            data: { todos, id, userId },
+        } = this.result;
 
         const completedEdges = todos && todos.edges ? todos.edges.filter((edge: any) => edge && edge.node && edge.node.complete) : [];
 

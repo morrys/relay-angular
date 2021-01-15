@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Fragment } from 'relay-angular';
 import { graphql } from 'relay-runtime';
 import { todoListItem_todo$key, todoListItem_todo$data } from '../../__generated__/relay/todoListItem_todo.graphql';
@@ -21,13 +21,27 @@ const fragmentNodeUser = graphql`
         completedCount
     }
 `;
+let index = 0;
 
 @Component({
     selector: 'app-todo-list-item',
     templateUrl: './todo-list-item.component.html',
     styleUrls: ['./todo-list-item.component.css'],
 })
-export class TodoListItemComponent {
+export class TodoListItemComponent implements OnInit, OnChanges, OnDestroy {
+    constructor() {
+        console.log('constructor TodoListItemComponent');
+    }
+    prova = index++;
+    ngOnInit(): void {
+        console.log('TodoListItemComponent ngOnInit', this.prova);
+    }
+    ngOnDestroy(): void {
+        console.log('TodoListItemComponent ngOnDestroy', this.prova);
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log('TodoListItemComponent ngOnChanges', changes, this.prova);
+    }
     @Input()
     fragmentRef: todoListItem_todo$key;
 
@@ -48,13 +62,13 @@ export class TodoListItemComponent {
             fragmentRef: this.fragmentRefUser,
         };
     })
-    user;
+    user2;
 
     toggleTodoComplete() {
-        changeTodoStatus.commit(!this.todo.complete, this.todo, this.user);
+        changeTodoStatus.commit(!this.todo.complete, this.todo, this.user2);
     }
 
     removeTodo(todo: any) {
-        removeTodo.commit(todo, this.user);
+        removeTodo.commit(todo, this.user2);
     }
 }
