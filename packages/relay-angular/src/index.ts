@@ -7,4 +7,5 @@ export { RelayProvider, EnvironmentContext } from './RelayProvider';
 export { RelayEnvironment } from './RelayEnvironment';
 export { mutate } from './Mutation';
 export { Restore } from './offline/Restore';
+export { loadQuery } from './loadQuery';
 export * from './RelayHooksTypes';
