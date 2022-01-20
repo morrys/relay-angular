@@ -1,6 +1,6 @@
 {
   "name": "relay-angular-plugin",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "keywords": [
     "relay",
     "angular",
@@ -30,18 +30,19 @@
     "eslint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "ts-relay-plugin": "^1.0.0"
   },
   "peerDependencies": {
-    "relay-config": ">=8.0.0",
     "ngx-build-plus": "^8.0.0",
     "@ngtools/webpack": "^8.0.0",
-    "graphql": "^14.0.0",
-    "typescript": "^3.8.0"
+    "graphql": "^14.0.0 | ^15.0.0",
+    "typescript": "^3.8.0 | ^4.0.0"
   },
   "devDependencies": {
     "@ngtools/webpack": "^8.3.26",
     "ngx-build-plus": "^8.0.0",
-    "relay-config": "^9.0.0",
-    "graphql": "^14.2.0"
+    "ts-relay-plugin": "^1.0.0",
+    "cosmiconfig": "^5.0.5",
+    "graphql": "15.3.0"
   }
 }
