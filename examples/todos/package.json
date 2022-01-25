@@ -24,13 +24,12 @@
     "tslib": "^2.0.1",
     "zone.js": "~0.10.3",
     "relay-angular": "0.2.0",
-    "relay-angular-plugin": "0.1.0",
+    "relay-angular-plugin": "0.1.1",
     "graphql-relay": "^0.6.0",
     "graphql": "^14.2.0",
     "relay-runtime": "8.0.0"
   },
   "devDependencies": {
-    "cosmiconfig": "^5.0.5",
     "babel-loader": "^8.0.5",
     "ngx-build-plus": "^13.0.1",
     "relay-compiler": "8.0.0",
