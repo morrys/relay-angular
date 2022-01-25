@@ -6667,10 +6667,10 @@ ts-node@~8.8.2:
     source-map-support "^0.5.6"
     yn "3.1.1"
 
-ts-relay-plugin@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ts-relay-plugin/-/ts-relay-plugin-1.0.0.tgz#947466a227438e2ced22cc37315e40e53940d5cb"
-  integrity sha512-hGfcHfv/ju3wy3iIHFxKug87QCv1OPiC+F941Me9tQtCqMfZmPKbAmnLIXbG82fKl+dXnzVRSClHjvFiqysJcg==
+ts-relay-plugin@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ts-relay-plugin/-/ts-relay-plugin-1.0.1.tgz#ebcfb258074778c9096072a9142c25f92223c4c4"
+  integrity sha512-NKIFYeufRfwCqDpwTVLuh77g+ZHUFIosG+I7xIvh1dkJ2elKi/xAZWMP15CIkzHvAqRUrv01PQ8MvD57vp1I2A==
 
 tsconfig-paths@^3.9.0:
   version "3.9.0"
