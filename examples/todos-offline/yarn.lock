@@ -8265,10 +8265,10 @@ regjsparser@^0.7.0:
   dependencies:
     jsesc "~0.5.0"
 
-relay-angular-plugin@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/relay-angular-plugin/-/relay-angular-plugin-0.1.1.tgz#c6dd230410b8376b23872beecaeec8eb8bf03860"
-  integrity sha512-yNXt+OMzI/LhvWaTczDmR3cOu+lsuY696Ora4R5XqF4mhJHZ48l0Lynzo0+LylI1K3YX7wZ43BAjuQr/TQ57bw==
+relay-angular-plugin@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/relay-angular-plugin/-/relay-angular-plugin-1.0.0.tgz#52023b746cadff70def97fe57048d38168691a0f"
+  integrity sha512-+hfou8rHC/x3hh6W1AQ2smo25cEuj6qGGqUOSUljCSOTvAp5HwWF6UgZ5asW6ziVVSH5fFUXzMk8ao2QoE69jg==
   dependencies:
     cosmiconfig "^5.0.5"
     ts-relay-plugin "^1.0.1"
