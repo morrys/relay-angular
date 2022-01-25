@@ -1,13 +1,18 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { AngularWebpackPlugin } from '@ngtools/webpack';
+import { ivy } from '@ngtools/webpack';
 import relayTransform from 'ts-relay-plugin';
-function findAngularWebpackPlugin(webpackCfg): AngularWebpackPlugin | null {
-    return webpackCfg.plugins.find((plugin) => plugin instanceof AngularWebpackPlugin);
+function findAngularWebpackPlugin(webpackCfg): any | null {
+    return webpackCfg.plugins.find((plugin) =>
+        AngularWebpackPlugin ? plugin instanceof AngularWebpackPlugin : plugin instanceof ivy.AngularWebpackPlugin,
+    );
+    // plugin instanceof AngularWebpackPlugin angular > 12
+    // plugin instanceof ivy.AngularWebpackPlugin angular == 11
 }
 
-function addTransformerToAngularWebpackPlugin(plugin: AngularWebpackPlugin, transformer): void {
-    const originalFetchQuery = (plugin as any).createFileEmitter; // private method
-    (plugin as any).createFileEmitter = function (program, transformers, getExtraDependencies, onAfterEmit) {
+function addTransformerToAngularWebpackPlugin(plugin: any, transformer): void {
+    const originalFetchQuery = plugin.createFileEmitter; // private method
+    plugin.createFileEmitter = function (program, transformers, getExtraDependencies, onAfterEmit) {
         if (!transformers) {
             transformers = {};
         }
