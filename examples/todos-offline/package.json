@@ -24,7 +24,7 @@
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
     "relay-angular": "0.1.0",
-    "relay-angular-plugin": "0.0.1",
+    "relay-angular-plugin": "0.1.0",
     "graphql-relay": "^0.6.0",
     "graphql": "^14.2.0",
     "relay-runtime": "8.0.0",
@@ -32,6 +32,7 @@
     "@wora/relay-store": "3.2.0"
   },
   "devDependencies": {
+    "cosmiconfig": "^5.0.5",
     "babel-loader": "^8.0.5",
     "ngx-build-plus": "^8.0.0",
     "relay-compiler": "8.0.0",

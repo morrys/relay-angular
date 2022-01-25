@@ -2665,7 +2665,7 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
-cosmiconfig@^5.0.0:
+cosmiconfig@^5.0.0, cosmiconfig@^5.0.5:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-5.2.1.tgz#040f726809c591e77a17c0a3626ca45b4f168b1a"
   integrity sha512-H65gsXo1SKjf8zmrJ67eJk8aIRKV5ff2D4uKZIBZShbhGSpEmsQOPW/SKMKYhSTrqR7ufy6RP69rPogdaPh/kA==
@@ -6636,10 +6636,12 @@ regjsparser@^0.6.4:
   dependencies:
     jsesc "~0.5.0"
 
-relay-angular-plugin@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/relay-angular-plugin/-/relay-angular-plugin-0.0.1.tgz#ade34d71eb4a2ad3dede35ab9e0955f7c3e0861c"
-  integrity sha512-7igrVPLEKOFvsSl5C83BoFNt75ZwwSdsfNwrkeTd9k8KFR9V5/P9h8n2I0QKt98gcDPSzas0VdOlgmalovUWuw==
+relay-angular-plugin@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/relay-angular-plugin/-/relay-angular-plugin-0.1.0.tgz#c94fb7117a648bceae7e28de5f053c38416d259f"
+  integrity sha512-gk2LueJfhBLwZ3DFjjZ1JSUhwr9SLF19e8t2zWaWAbqENrwPcRAKRW7tp2ct/z3XP27KPzK13bqz/YLkqWJWWg==
+  dependencies:
+    ts-relay-plugin "^1.0.0"
 
 relay-angular@0.1.0:
   version "0.1.0"
@@ -7816,6 +7818,11 @@ ts-node@~7.0.0:
     mkdirp "^0.5.1"
     source-map-support "^0.5.6"
     yn "^2.0.0"
+
+ts-relay-plugin@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ts-relay-plugin/-/ts-relay-plugin-1.0.1.tgz#ebcfb258074778c9096072a9142c25f92223c4c4"
+  integrity sha512-NKIFYeufRfwCqDpwTVLuh77g+ZHUFIosG+I7xIvh1dkJ2elKi/xAZWMP15CIkzHvAqRUrv01PQ8MvD57vp1I2A==
 
 tslib@1.10.0:
   version "1.10.0"

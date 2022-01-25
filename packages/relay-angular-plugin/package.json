@@ -30,7 +30,8 @@
     "eslint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "ts-relay-plugin": "^1.0.0"
+    "ts-relay-plugin": "^1.0.1",
+    "cosmiconfig": "^5.0.5"
   },
   "peerDependencies": {
     "ngx-build-plus": "^8.0.0",
@@ -42,7 +43,6 @@
     "@ngtools/webpack": "^8.3.26",
     "ngx-build-plus": "^8.0.0",
     "ts-relay-plugin": "^1.0.0",
-    "cosmiconfig": "^5.0.5",
     "graphql": "15.3.0"
   }
 }
