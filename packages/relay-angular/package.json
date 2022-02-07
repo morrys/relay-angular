@@ -1,6 +1,6 @@
 {
   "name": "relay-angular",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "keywords": [
     "relay",
     "angular",
@@ -27,15 +27,17 @@
     "eslint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "fbjs": "^1.0.0"
+    "fbjs": "^3.0.0"
   },
   "peerDependencies": {
-    "relay-runtime": ">=8.0.0",
+    "relay-runtime": "^13.0.2",
     "rxjs": ">= 6.0.0"
   },
   "devDependencies": {
     "rxjs": "~6.4.0",
-    "relay-runtime": "^9.0.0",
-    "@types/relay-runtime": "9.1.6"
+    "relay-runtime": "^13.0.2",
+    "@types/relay-runtime": "13.0.1",
+    "@types/fbjs": "3.0.0",
+    "@types/node": "13.9.3"
   }
 }

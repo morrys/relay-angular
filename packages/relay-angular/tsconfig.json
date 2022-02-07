@@ -4,6 +4,7 @@
         "outDir": "lib",
         "rootDir": "./src",
         "lib": ["es2015", "dom", "esnext.asynciterable", "es2017.object"],
+        "types" : ["node"],
     },
     "exclude": [
         "lib",

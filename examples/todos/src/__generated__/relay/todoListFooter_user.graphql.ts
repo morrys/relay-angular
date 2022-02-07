@@ -1,160 +1,196 @@
+/**
+ * @generated SignedSource<<e1f6bf804f22777178bb42675ecabe1b>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
+/* eslint-disable */
+// @ts-nocheck
 
-import { ReaderFragment } from "relay-runtime";
+import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type todoListFooter_user = {
-    readonly id: string;
-    readonly userId: string;
-    readonly completedCount: number;
-    readonly todos: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly id: string;
-                readonly complete: boolean;
-            } | null;
-        } | null> | null;
-    } | null;
-    readonly totalCount: number;
-    readonly " $refType": "todoListFooter_user";
+export type todoListFooter_user$data = {
+  readonly id: string;
+  readonly userId: string;
+  readonly completedCount: number;
+  readonly todos: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly id: string;
+        readonly complete: boolean;
+      } | null;
+    } | null> | null;
+  } | null;
+  readonly totalCount: number;
+  readonly " $fragmentType": "todoListFooter_user";
 };
-export type todoListFooter_user$data = todoListFooter_user;
+export type todoListFooter_user = todoListFooter_user$data;
 export type todoListFooter_user$key = {
-    readonly " $data"?: todoListFooter_user$data;
-    readonly " $fragmentRefs": FragmentRefs<"todoListFooter_user">;
+  readonly " $data"?: todoListFooter_user$data;
+  readonly " $fragmentSpreads": FragmentRefs<"todoListFooter_user">;
 };
-
-
 
 const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
+var v0 = [
+  "todos"
+],
+v1 = {
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "cursor"
+    },
+    {
+      "defaultValue": 2147483647,
+      "kind": "LocalArgument",
+      "name": "first"
+    }
+  ],
   "kind": "Fragment",
-  "name": "todoListFooter_user",
-  "type": "User",
   "metadata": {
     "connection": [
       {
-        "count": null,
-        "cursor": null,
+        "count": "first",
+        "cursor": "cursor",
         "direction": "forward",
-        "path": [
-          "todos"
-        ]
+        "path": (v0/*: any*/)
       }
-    ]
+    ],
+    "refetch": {
+      "connection": {
+        "forward": {
+          "count": "first",
+          "cursor": "cursor"
+        },
+        "backward": null,
+        "path": (v0/*: any*/)
+      },
+      "fragmentPathInResult": [
+        "node"
+      ],
+      "operation": require('./UserFragmentRefetchQuery.graphql'),
+      "identifierField": "id"
+    }
   },
-  "argumentDefinitions": [],
+  "name": "todoListFooter_user",
   "selections": [
-    (v0/*: any*/),
+    (v1/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "userId",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "completedCount",
       "args": null,
+      "kind": "ScalarField",
+      "name": "completedCount",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "todos",
-      "name": "__TodoList_todos_connection",
-      "storageKey": null,
       "args": null,
       "concreteType": "TodoConnection",
+      "kind": "LinkedField",
+      "name": "__TodoList_todos_connection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "TodoEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Todo",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
+                (v1/*: any*/),
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "complete",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "complete",
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "__typename",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "endCursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "hasNextPage",
               "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "totalCount",
       "args": null,
+      "kind": "ScalarField",
+      "name": "totalCount",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "User",
+  "abstractKey": null
 };
 })();
-(node as any).hash = 'e3616b5fc25e0010589772af1f3ada93';
+
+(node as any).hash = "2e00574cd88374b98c6b5f463f81ba71";
+
 export default node;

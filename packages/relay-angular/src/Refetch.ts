@@ -1,5 +1,5 @@
 import { makeFragmentsDecorator } from './Decorator';
 import { resolverDecorator } from './FragmentResolver';
-import { REFETCH } from './RelayHooksType';
+import { REFETCHABLE_NAME } from './RelayHooksTypes';
 
-export const Refetch = makeFragmentsDecorator(REFETCH, resolverDecorator);
+export const Refetch = makeFragmentsDecorator(REFETCHABLE_NAME, resolverDecorator);

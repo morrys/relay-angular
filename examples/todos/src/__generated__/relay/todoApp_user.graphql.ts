@@ -1,61 +1,70 @@
+/**
+ * @generated SignedSource<<a2f2e0180f18ebb1899de82f142d6f41>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
+/* eslint-disable */
+// @ts-nocheck
 
-import { ReaderFragment } from "relay-runtime";
+import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type todoApp_user = {
-    readonly id: string;
-    readonly userId: string;
-    readonly totalCount: number;
-    readonly " $fragmentRefs": FragmentRefs<"todoListFooter_user" | "todoList_user">;
-    readonly " $refType": "todoApp_user";
+export type todoApp_user$data = {
+  readonly id: string;
+  readonly userId: string;
+  readonly totalCount: number;
+  readonly " $fragmentSpreads": FragmentRefs<"todoListFooter_user" | "todoList_user">;
+  readonly " $fragmentType": "todoApp_user";
 };
-export type todoApp_user$data = todoApp_user;
+export type todoApp_user = todoApp_user$data;
 export type todoApp_user$key = {
-    readonly " $data"?: todoApp_user$data;
-    readonly " $fragmentRefs": FragmentRefs<"todoApp_user">;
+  readonly " $data"?: todoApp_user$data;
+  readonly " $fragmentSpreads": FragmentRefs<"todoApp_user">;
 };
-
-
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "todoApp_user",
-  "type": "User",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "todoApp_user",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "id",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "userId",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "totalCount",
       "args": null,
+      "kind": "ScalarField",
+      "name": "totalCount",
       "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "todoListFooter_user",
-      "args": null
+      "name": "todoListFooter_user"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "todoList_user",
-      "args": null
+      "name": "todoList_user"
     }
-  ]
+  ],
+  "type": "User",
+  "abstractKey": null
 };
-(node as any).hash = 'e98790ba10cece45234c522427451176';
+
+(node as any).hash = "e98790ba10cece45234c522427451176";
+
 export default node;

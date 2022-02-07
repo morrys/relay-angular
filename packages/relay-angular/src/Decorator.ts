@@ -1,5 +1,5 @@
 import { OperationType, GraphQLTaggedNode } from 'relay-runtime';
-import { KeyType, ArrayKeyType, QueryOptions } from './RelayHooksType';
+import { KeyType, ArrayKeyType, QueryOptions } from './RelayHooksTypes';
 
 export const PROP_METADATA = '__prop__metadata__';
 
@@ -7,26 +7,27 @@ export function noSideEffects<T>(fn: () => T): T {
     return ({ toString: fn }.toString() as unknown) as T;
 }
 
-let index = 0;
+const mapResolverTarget = new Map();
+function getOrCreateResolver(target, name, decoratorName, resolve): any {
+    const mapResolverField = mapResolverTarget.get(target) || new Map();
 
-const mapResolver: Map<string, any> = new Map();
-
-function getOrCreateResolver(id: string, decoratorName: string, resolve: any): any {
-    if (mapResolver.has(id)) {
-        return mapResolver.get(id);
+    mapResolverTarget.set(target, mapResolverField);
+    if (mapResolverField.has(name)) {
+        return mapResolverField.get(name);
     }
     const resolver = resolve(decoratorName);
-    mapResolver.set(id, resolver);
+    mapResolverField.set(name, resolver);
     return resolver;
 }
-
-function disposeResolver(id: string): any {
-    if (mapResolver.has(id)) {
-        const resolver = mapResolver.get(id);
+function disposeResolver(target, name): void {
+    const mapResolverField = mapResolverTarget.get(target);
+    if (mapResolverField && mapResolverField.has(name)) {
+        const resolver = mapResolverField.get(name);
         if (resolver) {
             resolver.dispose();
-            mapResolver.delete(id);
+            mapResolverField.delete(name);
         }
+        mapResolverField.size === 0 && mapResolverTarget.delete(target);
     }
 }
 
@@ -34,13 +35,11 @@ function relayDecorator(target, decoratorName, name, resolve, props): void {
     const ngOnInitOriginal = target.ngOnInit;
     const ngOnChangesOriginal = target.ngOnChanges;
     const ngOnDestroyOriginal = target.ngOnDestroy;
-    index += 1;
-    const id = `${index}-${name}`;
     target.ngOnInit = function (): any {
-        const resolver = getOrCreateResolver(id, decoratorName, resolve);
+        const resolver = getOrCreateResolver(this, name, decoratorName, resolve);
         if (ngOnInitOriginal) ngOnInitOriginal.apply(this);
         const forceUpdate = (): void => {
-            const resolver = getOrCreateResolver(id, decoratorName, resolve);
+            const resolver = getOrCreateResolver(this, name, decoratorName, resolve);
             if (resolver && resolver.update) {
                 this[name] = resolver.update(props.apply(this, [this]));
             }
@@ -49,7 +48,7 @@ function relayDecorator(target, decoratorName, name, resolve, props): void {
     };
     target.ngOnChanges = function (changes): any {
         if (ngOnChangesOriginal) ngOnChangesOriginal.apply(this, [changes]);
-        const resolver = getOrCreateResolver(id, decoratorName, resolve);
+        const resolver = getOrCreateResolver(this, name, decoratorName, resolve);
         if (resolver && resolver.update) {
             this[name] = resolver.update(props.apply(this, [this]));
         }
@@ -57,7 +56,7 @@ function relayDecorator(target, decoratorName, name, resolve, props): void {
 
     target.ngOnDestroy = function (): any {
         if (ngOnDestroyOriginal) ngOnDestroyOriginal.apply(this);
-        disposeResolver(id);
+        disposeResolver(this, name);
     };
 }
 
