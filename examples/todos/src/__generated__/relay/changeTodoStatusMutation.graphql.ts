@@ -1,52 +1,41 @@
+/**
+ * @generated SignedSource<<af2e9fbf5498b9c3b074b8b4831dc15c>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type ChangeTodoStatusInput = {
-    complete: boolean;
-    id: string;
-    userId: string;
-    clientMutationId?: string | null;
+  complete: boolean;
+  id: string;
+  userId: string;
+  clientMutationId?: string | null;
 };
-export type changeTodoStatusMutationVariables = {
-    input: ChangeTodoStatusInput;
+export type changeTodoStatusMutation$variables = {
+  input: ChangeTodoStatusInput;
 };
-export type changeTodoStatusMutationResponse = {
-    readonly changeTodoStatus: {
-        readonly todo: {
-            readonly id: string;
-            readonly complete: boolean;
-        };
-        readonly user: {
-            readonly id: string;
-            readonly completedCount: number;
-        };
-    } | null;
+export type changeTodoStatusMutationVariables = changeTodoStatusMutation$variables;
+export type changeTodoStatusMutation$data = {
+  readonly changeTodoStatus: {
+    readonly todo: {
+      readonly id: string;
+      readonly complete: boolean;
+    };
+    readonly user: {
+      readonly id: string;
+      readonly completedCount: number;
+    };
+  } | null;
 };
+export type changeTodoStatusMutationResponse = changeTodoStatusMutation$data;
 export type changeTodoStatusMutation = {
-    readonly response: changeTodoStatusMutationResponse;
-    readonly variables: changeTodoStatusMutationVariables;
+  variables: changeTodoStatusMutationVariables;
+  response: changeTodoStatusMutation$data;
 };
-
-
-
-/*
-mutation changeTodoStatusMutation(
-  $input: ChangeTodoStatusInput!
-) {
-  changeTodoStatus(input: $input) {
-    todo {
-      id
-      complete
-    }
-    user {
-      id
-      completedCount
-    }
-  }
-}
-*/
 
 const node: ConcreteRequest = (function(){
 var v0 = [
@@ -147,5 +136,7 @@ return {
   }
 };
 })();
-(node as any).hash = '1c617bd7d86cf92a811ec0ef42e1870b';
+
+(node as any).hash = "1c617bd7d86cf92a811ec0ef42e1870b";
+
 export default node;

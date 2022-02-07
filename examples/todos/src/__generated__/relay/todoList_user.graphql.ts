@@ -1,33 +1,37 @@
+/**
+ * @generated SignedSource<<147b590ec983aaedb721145cc64a42ac>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ReaderFragment } from "relay-runtime";
+import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type todoList_user = {
-    readonly id: string;
-    readonly userId: string;
-    readonly totalCount: number;
-    readonly completedCount: number;
-    readonly todos: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly id: string;
-                readonly complete: boolean;
-                readonly " $fragmentRefs": FragmentRefs<"todoListItem_todo">;
-            } | null;
-        } | null> | null;
-    } | null;
-    readonly " $fragmentRefs": FragmentRefs<"todoListItem_user">;
-    readonly " $refType": "todoList_user";
+export type todoList_user$data = {
+  readonly id: string;
+  readonly userId: string;
+  readonly totalCount: number;
+  readonly completedCount: number;
+  readonly todos: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly id: string;
+        readonly complete: boolean;
+        readonly " $fragmentSpreads": FragmentRefs<"todoListItem_todo">;
+      } | null;
+    } | null> | null;
+  } | null;
+  readonly " $fragmentSpreads": FragmentRefs<"todoListItem_user">;
+  readonly " $fragmentType": "todoList_user";
 };
-export type todoList_user$data = todoList_user;
+export type todoList_user = todoList_user$data;
 export type todoList_user$key = {
-    readonly " $data"?: todoList_user$data;
-    readonly " $fragmentRefs": FragmentRefs<"todoList_user">;
+  readonly " $data"?: todoList_user$data;
+  readonly " $fragmentSpreads": FragmentRefs<"todoList_user">;
 };
-
-
 
 const node: ReaderFragment = (function(){
 var v0 = {
@@ -88,6 +92,11 @@ return {
       "storageKey": null
     },
     {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "todoListItem_user"
+    },
+    {
       "alias": "todos",
       "args": null,
       "concreteType": "TodoConnection",
@@ -120,16 +129,16 @@ return {
                   "storageKey": null
                 },
                 {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "todoListItem_todo"
+                },
+                {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
-                },
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "todoListItem_todo"
                 }
               ],
               "storageKey": null
@@ -171,16 +180,13 @@ return {
         }
       ],
       "storageKey": null
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "todoListItem_user"
     }
   ],
   "type": "User",
   "abstractKey": null
 };
 })();
-(node as any).hash = '48fb9ae3f0adf6298364abb1e68d436a';
+
+(node as any).hash = "48fb9ae3f0adf6298364abb1e68d436a";
+
 export default node;

@@ -10,6 +10,8 @@ import {
     VariablesOf,
     FragmentReference,
     RenderPolicy,
+    GraphQLSubscriptionConfig,
+    GraphQLResponse,
 } from 'relay-runtime';
 
 export type MutationState<T extends MutationParameters> = {
@@ -25,10 +27,6 @@ export type MutationConfig<T extends MutationParameters> = Partial<Omit<BaseMuta
 };
 
 export type MutationConfigWithoutVariables<T extends MutationParameters> = Omit<MutationConfig<T>, 'variables'>;
-
-export type MutationConfigWithVariables<T extends MutationParameters> = MutationConfig<T> & {
-    variables: T['variables'];
-};
 
 export type Mutate<T extends MutationParameters> = (config?: Partial<MutationConfig<T>>) => Promise<T['response']>;
 
@@ -66,6 +64,7 @@ export type QueryOptions = {
     fetchKey?: string | number;
     networkCacheConfig?: CacheConfig;
     skip?: boolean;
+    onResponse?: (response: GraphQLResponse) => void;
     onComplete?: (_e: Error | null) => void;
     UNSTABLE_renderPolicy?: RenderPolicy;
 };
@@ -74,7 +73,7 @@ export type $Call<Fn extends (...args: any[]) => any> = Fn extends (arg: any) =>
 
 export type KeyType<TData = unknown> = Readonly<{
     ' $data'?: TData;
-    ' $fragmentRefs': FragmentReference;
+    ' $fragmentSpreads': FragmentReference;
 }>;
 export type ArrayKeyType = ReadonlyArray<{ readonly ' $data'?: ReadonlyArray<unknown> } | null>;
 
@@ -97,7 +96,7 @@ export type LoadQuery<TOperationType extends OperationType = OperationType, TEnv
         options?: QueryOptions,
     ) => Promise<void>;
     subscribe: (callback: () => any) => () => void;
-    getValue: (environment: TEnvironment) => RenderProps<TOperationType> | Promise<any>;
+    getValue: (environment?: TEnvironment) => RenderProps<TOperationType> | Promise<any>;
     dispose: () => void;
 };
 
@@ -105,12 +104,14 @@ export type LoadQuery<TOperationType extends OperationType = OperationType, TEnv
 
 export interface Options {
     fetchPolicy?: FetchPolicy;
+    onResponse?: (response: GraphQLResponse) => void;
     onComplete?: (arg: Error | null) => void;
     UNSTABLE_renderPolicy?: RenderPolicy;
 }
 
 export interface OptionsLoadMore<TQuery extends OperationType = OperationType> {
     //fetchPolicy?: FetchPolicy;
+    onResponse?: (response: GraphQLResponse) => void;
     onComplete?: (arg: Error | null) => void;
     UNSTABLE_extraVariables?: VariablesOf<TQuery>;
 }
@@ -120,11 +121,12 @@ export interface OptionsLoadMore<TQuery extends OperationType = OperationType> {
 //    /nullable/.
 //  - Or, expects /a subset/ of the query variables if the provided key type is
 //    /non-null/.
-export type RefetchFnDynamic<TQuery extends OperationType, TKey extends KeyType | null, TOptions = Options> = RefetchInexactDynamicResponse<
-    TQuery,
-    TOptions
-> &
-    RefetchExactDynamicResponse<TQuery, TOptions>;
+export type RefetchFnDynamic<
+    TQuery extends OperationType,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Key extends KeyType | null,
+    TOptions = Options
+> = RefetchInexactDynamicResponse<TQuery, TOptions> & RefetchExactDynamicResponse<TQuery, TOptions>;
 
 export type RefetchInexact<TQuery extends OperationType, TOptions> = (data?: unknown) => RefetchFnInexact<TQuery, TOptions>;
 export type RefetchInexactDynamicResponse<TQuery extends OperationType, TOptions> = ReturnType<RefetchInexact<TQuery, TOptions>>;
@@ -169,10 +171,16 @@ export interface ReturnTypePaginationSuspense<TQuery extends OperationType, TKey
     refetch: RefetchFnDynamic<TQuery, TKey>;
 }
 
-/*
-export type RefetchDecorator<T> = {
-    refetch: RefetchFunction;
-} & T;
+export type SubscriptionConfig = {
+    skip?: boolean;
+};
 
-export type PaginationDecorator<T> = PaginationFunction & T;
-*/
+export type SkipSubscriptionConfig = {
+    skip: true;
+};
+
+export interface SkipGraphQLSubscriptionConfig<TSubscription extends OperationType>
+    extends Omit<GraphQLSubscriptionConfig<TSubscription>, 'variables' | 'subscription'> {
+    subscription?: GraphQLSubscriptionConfig<TSubscription>['subscription'];
+    variables?: TSubscription['variables'];
+}

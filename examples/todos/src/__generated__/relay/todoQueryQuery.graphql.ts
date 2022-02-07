@@ -1,100 +1,30 @@
+/**
+ * @generated SignedSource<<91070d192e1c25fd3a751b4210b5326a>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type todoQueryQueryVariables = {
-    userId?: string | null;
+export type todoQueryQuery$variables = {
+  userId?: string | null;
 };
-export type todoQueryQueryResponse = {
-    readonly user: {
-        readonly id: string;
-        readonly " $fragmentRefs": FragmentRefs<"todoApp_user">;
-    } | null;
+export type todoQueryQueryVariables = todoQueryQuery$variables;
+export type todoQueryQuery$data = {
+  readonly user: {
+    readonly id: string;
+    readonly " $fragmentSpreads": FragmentRefs<"todoApp_user">;
+  } | null;
 };
+export type todoQueryQueryResponse = todoQueryQuery$data;
 export type todoQueryQuery = {
-    readonly response: todoQueryQueryResponse;
-    readonly variables: todoQueryQueryVariables;
+  variables: todoQueryQueryVariables;
+  response: todoQueryQuery$data;
 };
-
-
-
-/*
-query todoQueryQuery(
-  $userId: String
-) {
-  user(id: $userId) {
-    id
-    ...todoApp_user
-  }
-}
-
-fragment todoApp_user on User {
-  id
-  userId
-  totalCount
-  ...todoListFooter_user
-  ...todoList_user
-}
-
-fragment todoListFooter_user on User {
-  id
-  userId
-  completedCount
-  todos(first: 2147483647) {
-    edges {
-      node {
-        id
-        complete
-        __typename
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
-  totalCount
-}
-
-fragment todoListItem_todo on Todo {
-  complete
-  id
-  text
-}
-
-fragment todoListItem_user on User {
-  id
-  userId
-  totalCount
-  completedCount
-}
-
-fragment todoList_user on User {
-  id
-  userId
-  totalCount
-  completedCount
-  ...todoListItem_user
-  todos(first: 2147483647) {
-    edges {
-      node {
-        id
-        complete
-        ...todoListItem_todo
-        __typename
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
-}
-*/
 
 const node: ConcreteRequest = (function(){
 var v0 = [
@@ -300,5 +230,7 @@ return {
   }
 };
 })();
-(node as any).hash = '17b7af5d8db70d9d3832e4e2e607579d';
+
+(node as any).hash = "17b7af5d8db70d9d3832e4e2e607579d";
+
 export default node;

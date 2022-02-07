@@ -46,6 +46,7 @@ export class QueryFetcher<TOperationType extends OperationType = OperationType> 
     options: QueryOptions;
     forceUpdate = emptyforceUpdate;
     result: RenderProps<TOperationType>;
+    skip?: boolean;
 
     constructor() {
         this.result = {
@@ -106,9 +107,14 @@ export class QueryFetcher<TOperationType extends OperationType = OperationType> 
         this.forceUpdate();
     };
 
-    fetch(query: OperationDescriptor, fetchPolicy: FetchPolicy, options: Options): void {
+    fetch(query: OperationDescriptor, fetchPolicy: FetchPolicy, options: Options, skip?: boolean): void {
         this.disposeSnapshot();
-        const { onComplete } = options;
+        if (skip) {
+            this.fetcher.dispose();
+            return;
+        }
+
+        const { onComplete, onResponse } = options;
         let fetchHasReturned = false;
         const onNext = (_o: OperationDescriptor, snapshot: Snapshot): void => {
             if (!this.snapshot) {
@@ -127,7 +133,7 @@ export class QueryFetcher<TOperationType extends OperationType = OperationType> 
             }
             onComplete && onComplete(error);
         };
-        this.fetcher.fetch(this.environment, query, fetchPolicy, complete, onNext);
+        this.fetcher.fetch(this.environment, query, fetchPolicy, complete, onNext, onResponse);
         fetchHasReturned = true;
     }
 
@@ -154,17 +160,20 @@ export class QueryFetcher<TOperationType extends OperationType = OperationType> 
         const query = this.getQuery(gqlQuery, variables, options.networkCacheConfig);
         const { fetchPolicy = defaultPolicy, fetchKey, skip } = options;
         this.options = options;
-        if (skip) {
-            this.dispose();
-            return;
-        }
         const diffQuery = !this.query || query.request.identifier !== this.query.request.identifier;
-        if (diffQuery || environment !== this.environment || fetchPolicy !== this.fetchPolicy || fetchKey !== this.fetchKey) {
+        if (
+            diffQuery ||
+            environment !== this.environment ||
+            fetchPolicy !== this.fetchPolicy ||
+            fetchKey !== this.fetchKey ||
+            skip !== this.skip
+        ) {
             this.environment = environment;
             this.query = query;
+            this.skip = skip;
             this.fetchPolicy = fetchPolicy;
             this.fetchKey = fetchKey;
-            this.fetch(this.query, fetchPolicy, options);
+            this.fetch(query, fetchPolicy, options, skip);
             this.resolveResult();
         }
     }
@@ -182,7 +191,7 @@ export class QueryFetcher<TOperationType extends OperationType = OperationType> 
     }
 
     getData(): RenderProps<TOperationType> {
-        return this.result;
+        return this.result as RenderProps<TOperationType>;
     }
 
     resolveResult(): void {

@@ -30,13 +30,13 @@
     "fbjs": "^3.0.0"
   },
   "peerDependencies": {
-    "relay-runtime": "^10.1.0",
+    "relay-runtime": "^13.0.2",
     "rxjs": ">= 6.0.0"
   },
   "devDependencies": {
     "rxjs": "~6.4.0",
-    "relay-runtime": "^10.1.0",
-    "@types/relay-runtime": "10.1.7",
+    "relay-runtime": "^13.0.2",
+    "@types/relay-runtime": "13.0.1",
     "@types/fbjs": "3.0.0",
     "@types/node": "13.9.3"
   }

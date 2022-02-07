@@ -1,51 +1,40 @@
+/**
+ * @generated SignedSource<<aedb8248431c05b51d988090ca675445>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type MarkAllTodosInput = {
-    complete: boolean;
-    userId: string;
-    clientMutationId?: string | null;
+  complete: boolean;
+  userId: string;
+  clientMutationId?: string | null;
 };
-export type markAllTodosMutationVariables = {
-    input: MarkAllTodosInput;
+export type markAllTodosMutation$variables = {
+  input: MarkAllTodosInput;
 };
-export type markAllTodosMutationResponse = {
-    readonly markAllTodos: {
-        readonly changedTodos: ReadonlyArray<{
-            readonly id: string;
-            readonly complete: boolean;
-        }> | null;
-        readonly user: {
-            readonly id: string;
-            readonly completedCount: number;
-        };
-    } | null;
+export type markAllTodosMutationVariables = markAllTodosMutation$variables;
+export type markAllTodosMutation$data = {
+  readonly markAllTodos: {
+    readonly changedTodos: ReadonlyArray<{
+      readonly id: string;
+      readonly complete: boolean;
+    }> | null;
+    readonly user: {
+      readonly id: string;
+      readonly completedCount: number;
+    };
+  } | null;
 };
+export type markAllTodosMutationResponse = markAllTodosMutation$data;
 export type markAllTodosMutation = {
-    readonly response: markAllTodosMutationResponse;
-    readonly variables: markAllTodosMutationVariables;
+  variables: markAllTodosMutationVariables;
+  response: markAllTodosMutation$data;
 };
-
-
-
-/*
-mutation markAllTodosMutation(
-  $input: MarkAllTodosInput!
-) {
-  markAllTodos(input: $input) {
-    changedTodos {
-      id
-      complete
-    }
-    user {
-      id
-      completedCount
-    }
-  }
-}
-*/
 
 const node: ConcreteRequest = (function(){
 var v0 = [
@@ -146,5 +135,7 @@ return {
   }
 };
 })();
-(node as any).hash = '5388409150f4a084ce923ec53d33e56d';
+
+(node as any).hash = "5388409150f4a084ce923ec53d33e56d";
+
 export default node;

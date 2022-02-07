@@ -27,12 +27,12 @@
     "relay-angular-plugin": "1.0.0",
     "graphql-relay": "^0.6.0",
     "graphql": "^14.2.0",
-    "relay-runtime": "10.1.2"
+    "relay-runtime": "^13.0.2"
   },
   "devDependencies": {
     "babel-loader": "^8.0.5",
     "ngx-build-plus": "^13.0.1",
-    "relay-compiler": "8.0.0",
+    "relay-compiler": "^13.0.0",
     "babel-plugin-relay": "^8.0.0",
     "@angular-devkit/build-angular": "~13.1.4",
     "@angular/cli": "~13.1.4",

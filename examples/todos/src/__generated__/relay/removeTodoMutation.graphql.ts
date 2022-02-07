@@ -1,46 +1,37 @@
+/**
+ * @generated SignedSource<<3330aa4f5c1ab626195f83d06436983c>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type RemoveTodoInput = {
-    id: string;
-    userId: string;
-    clientMutationId?: string | null;
+  id: string;
+  userId: string;
+  clientMutationId?: string | null;
 };
-export type removeTodoMutationVariables = {
-    input: RemoveTodoInput;
+export type removeTodoMutation$variables = {
+  input: RemoveTodoInput;
 };
-export type removeTodoMutationResponse = {
-    readonly removeTodo: {
-        readonly deletedTodoId: string;
-        readonly user: {
-            readonly completedCount: number;
-            readonly totalCount: number;
-        };
-    } | null;
+export type removeTodoMutationVariables = removeTodoMutation$variables;
+export type removeTodoMutation$data = {
+  readonly removeTodo: {
+    readonly deletedTodoId: string;
+    readonly user: {
+      readonly completedCount: number;
+      readonly totalCount: number;
+    };
+  } | null;
 };
+export type removeTodoMutationResponse = removeTodoMutation$data;
 export type removeTodoMutation = {
-    readonly response: removeTodoMutationResponse;
-    readonly variables: removeTodoMutationVariables;
+  variables: removeTodoMutationVariables;
+  response: removeTodoMutation$data;
 };
-
-
-
-/*
-mutation removeTodoMutation(
-  $input: RemoveTodoInput!
-) {
-  removeTodo(input: $input) {
-    deletedTodoId
-    user {
-      completedCount
-      totalCount
-      id
-    }
-  }
-}
-*/
 
 const node: ConcreteRequest = (function(){
 var v0 = [
@@ -164,5 +155,7 @@ return {
   }
 };
 })();
-(node as any).hash = '212094e4f18cabd6488d501c61830784';
+
+(node as any).hash = "212094e4f18cabd6488d501c61830784";
+
 export default node;

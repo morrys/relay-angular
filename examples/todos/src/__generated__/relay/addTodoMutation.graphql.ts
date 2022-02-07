@@ -1,61 +1,45 @@
+/**
+ * @generated SignedSource<<c0bd4d5fc33c7daf0789787436977d91>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type AddTodoInput = {
-    text: string;
-    userId: string;
-    clientMutationId?: string | null;
+  text: string;
+  userId: string;
+  clientMutationId?: string | null;
 };
-export type addTodoMutationVariables = {
-    input: AddTodoInput;
+export type addTodoMutation$variables = {
+  input: AddTodoInput;
 };
-export type addTodoMutationResponse = {
-    readonly addTodo: {
-        readonly todoEdge: {
-            readonly __typename: string;
-            readonly cursor: string;
-            readonly node: {
-                readonly complete: boolean;
-                readonly id: string;
-                readonly text: string;
-            } | null;
-        };
-        readonly user: {
-            readonly id: string;
-            readonly totalCount: number;
-        };
-    } | null;
+export type addTodoMutationVariables = addTodoMutation$variables;
+export type addTodoMutation$data = {
+  readonly addTodo: {
+    readonly todoEdge: {
+      readonly __typename: string;
+      readonly cursor: string;
+      readonly node: {
+        readonly complete: boolean;
+        readonly id: string;
+        readonly text: string;
+      } | null;
+    };
+    readonly user: {
+      readonly id: string;
+      readonly totalCount: number;
+    };
+  } | null;
 };
+export type addTodoMutationResponse = addTodoMutation$data;
 export type addTodoMutation = {
-    readonly response: addTodoMutationResponse;
-    readonly variables: addTodoMutationVariables;
+  variables: addTodoMutationVariables;
+  response: addTodoMutation$data;
 };
-
-
-
-/*
-mutation addTodoMutation(
-  $input: AddTodoInput!
-) {
-  addTodo(input: $input) {
-    todoEdge {
-      __typename
-      cursor
-      node {
-        complete
-        id
-        text
-      }
-    }
-    user {
-      id
-      totalCount
-    }
-  }
-}
-*/
 
 const node: ConcreteRequest = (function(){
 var v0 = [
@@ -188,5 +172,7 @@ return {
   }
 };
 })();
-(node as any).hash = '4ba00dd414c333968d6a5e4f95ac83d2';
+
+(node as any).hash = "4ba00dd414c333968d6a5e4f95ac83d2";
+
 export default node;

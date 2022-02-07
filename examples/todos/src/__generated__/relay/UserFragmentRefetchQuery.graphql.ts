@@ -1,60 +1,31 @@
+/**
+ * @generated SignedSource<<0c10f5fa168c03f64d181113709f2608>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type UserFragmentRefetchQueryVariables = {
-    cursor?: string | null;
-    first?: number | null;
-    id: string;
+export type UserFragmentRefetchQuery$variables = {
+  cursor?: string | null;
+  first?: number | null;
+  id: string;
 };
-export type UserFragmentRefetchQueryResponse = {
-    readonly node: {
-        readonly " $fragmentRefs": FragmentRefs<"todoListFooter_user">;
-    } | null;
+export type UserFragmentRefetchQueryVariables = UserFragmentRefetchQuery$variables;
+export type UserFragmentRefetchQuery$data = {
+  readonly node: {
+    readonly " $fragmentSpreads": FragmentRefs<"todoListFooter_user">;
+  } | null;
 };
+export type UserFragmentRefetchQueryResponse = UserFragmentRefetchQuery$data;
 export type UserFragmentRefetchQuery = {
-    readonly response: UserFragmentRefetchQueryResponse;
-    readonly variables: UserFragmentRefetchQueryVariables;
+  variables: UserFragmentRefetchQueryVariables;
+  response: UserFragmentRefetchQuery$data;
 };
-
-
-
-/*
-query UserFragmentRefetchQuery(
-  $cursor: String
-  $first: Int = 2147483647
-  $id: ID!
-) {
-  node(id: $id) {
-    __typename
-    ...todoListFooter_user_19XkED
-    id
-  }
-}
-
-fragment todoListFooter_user_19XkED on User {
-  id
-  userId
-  completedCount
-  todos(first: $first, after: $cursor) {
-    edges {
-      node {
-        id
-        complete
-        __typename
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
-  totalCount
-}
-*/
 
 const node: ConcreteRequest = (function(){
 var v0 = [
@@ -284,5 +255,7 @@ return {
   }
 };
 })();
-(node as any).hash = '2e00574cd88374b98c6b5f463f81ba71';
+
+(node as any).hash = "2e00574cd88374b98c6b5f463f81ba71";
+
 export default node;

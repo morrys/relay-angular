@@ -1,31 +1,35 @@
+/**
+ * @generated SignedSource<<e1f6bf804f22777178bb42675ecabe1b>>
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
 
-import { ReaderFragment } from "relay-runtime";
+import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type todoListFooter_user = {
-    readonly id: string;
-    readonly userId: string;
-    readonly completedCount: number;
-    readonly todos: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly id: string;
-                readonly complete: boolean;
-            } | null;
-        } | null> | null;
-    } | null;
-    readonly totalCount: number;
-    readonly " $refType": "todoListFooter_user";
+export type todoListFooter_user$data = {
+  readonly id: string;
+  readonly userId: string;
+  readonly completedCount: number;
+  readonly todos: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly id: string;
+        readonly complete: boolean;
+      } | null;
+    } | null> | null;
+  } | null;
+  readonly totalCount: number;
+  readonly " $fragmentType": "todoListFooter_user";
 };
-export type todoListFooter_user$data = todoListFooter_user;
+export type todoListFooter_user = todoListFooter_user$data;
 export type todoListFooter_user$key = {
-    readonly " $data"?: todoListFooter_user$data;
-    readonly " $fragmentRefs": FragmentRefs<"todoListFooter_user">;
+  readonly " $data"?: todoListFooter_user$data;
+  readonly " $fragmentSpreads": FragmentRefs<"todoListFooter_user">;
 };
-
-
 
 const node: ReaderFragment = (function(){
 var v0 = [
@@ -73,7 +77,7 @@ return {
       "fragmentPathInResult": [
         "node"
       ],
-      "operation": require('./UserFragmentRefetchQuery.graphql.ts'),
+      "operation": require('./UserFragmentRefetchQuery.graphql'),
       "identifierField": "id"
     }
   },
@@ -186,5 +190,7 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '2e00574cd88374b98c6b5f463f81ba71';
+
+(node as any).hash = "2e00574cd88374b98c6b5f463f81ba71";
+
 export default node;

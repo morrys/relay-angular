@@ -18,13 +18,13 @@ import {
     getDataIDsFromFragment,
     RequestDescriptor,
     Environment,
+    getPaginationMetadata,
+    getPaginationVariables,
+    getRefetchMetadata,
+    getValueAtPath,
 } from 'relay-runtime';
 import { Fetcher, fetchResolver } from './FetchResolver';
 import { getConnectionState, getStateFromConnection } from './getConnectionState';
-import { getPaginationMetadata } from './getPaginationMetadata';
-import { getPaginationVariables } from './getPaginationVariables';
-import { getRefetchMetadata } from './getRefetchMetadata';
-import { getValueAtPath } from './getValueAtPath';
 import { FragmentNames, Options, OptionsLoadMore, PAGINATION_NAME, REFETCHABLE_NAME } from './RelayHooksTypes';
 import { environmentContext } from './RelayProvider';
 import { createOperation, forceCache } from './Utils';
@@ -58,17 +58,40 @@ function isMissingData(snapshot: SingularOrPluralSnapshot): boolean {
     return snapshot.isMissingData;
 }
 
-function getPromiseForPendingOperationAffectingOwner(environment: IEnvironment, request: RequestDescriptor): Promise<void> | null {
-    return environment.getOperationTracker().getPromiseForPendingOperationsAffectingOwner(request);
-}
+function _getAndSavePromiseForFragmentRequestInFlight(
+    fragmentNode: ReaderFragment,
+    fragmentOwner: RequestDescriptor,
+    env: IEnvironment,
+): Promise<void> | null {
+    let networkPromise = getPromiseForActiveRequest(env, fragmentOwner);
+    let pendingOperationName;
 
-function _getAndSavePromiseForFragmentRequestInFlight(fragmentOwner: RequestDescriptor, environment: IEnvironment): Promise<void> | null {
-    const networkPromise =
-        getPromiseForActiveRequest(environment, fragmentOwner) ?? getPromiseForPendingOperationAffectingOwner(environment, fragmentOwner);
+    if (networkPromise != null) {
+        pendingOperationName = fragmentOwner.node.params.name;
+    } else {
+        const result = env.getOperationTracker().getPendingOperationsAffectingOwner(fragmentOwner);
+        const pendingOperations = result?.pendingOperations;
+        networkPromise = result?.promise ?? null;
+        pendingOperationName = pendingOperations?.map((op) => op.node.params.name).join(',') ?? null;
+    }
 
     if (!networkPromise) {
         return null;
     }
+
+    if (pendingOperationName == null || pendingOperationName.length === 0) {
+        pendingOperationName = 'Unknown pending operation';
+    }
+
+    // When the Promise for the request resolves, we need to make sure to
+    // update the cache with the latest data available in the store before
+    // resolving the Promise
+
+    const fragmentName = fragmentNode.name;
+    const promiseDisplayName =
+        pendingOperationName === fragmentName ? `Relay(${pendingOperationName})` : `Relay(${pendingOperationName}:${fragmentName})`;
+
+    (networkPromise as any).displayName = promiseDisplayName;
     return networkPromise;
 }
 
@@ -82,7 +105,7 @@ export class FragmentResolver {
     resolverData: FragmentResult;
     _disposable: Disposable | undefined;
     _selector: ReaderSelector | null;
-    refreshHooks: any = () => undefined;
+    refreshHooks: any;
     fetcherRefecth: Fetcher;
     fetcherNext: Fetcher;
     fetcherPrevious: Fetcher;
@@ -91,6 +114,7 @@ export class FragmentResolver {
     refetchable = false;
     pagination = false;
     result: any;
+    _subscribeResolve;
 
     constructor(name: FragmentNames) {
         this.name = name;
@@ -110,11 +134,18 @@ export class FragmentResolver {
         }
     }
 
-    setForceUpdate(forceUpdate: () => void): void {
+    setForceUpdate(forceUpdate = (): void => undefined): void {
         this.refreshHooks = (): void => {
             this.resolveResult();
             forceUpdate();
         };
+    }
+
+    subscribeResolve(subscribeResolve: (data: any) => void): void {
+        if (this._subscribeResolve && this._subscribeResolve != subscribeResolve) {
+            subscribeResolve(this.getData());
+        }
+        this._subscribeResolve = subscribeResolve;
     }
 
     setUnmounted(): void {
@@ -160,6 +191,8 @@ export class FragmentResolver {
             this._environment = environment;
             this.lookup(fragment, this._fragmentRef);
             this.resolveResult();
+            // angular
+            this.subscribe();
         }
     }
 
@@ -185,13 +218,13 @@ export class FragmentResolver {
                 : (this._selector as any).owner
             : null;
         this.resolverData.owner = owner;
-        this.subscribe();
+        //this.subscribe();
     }
 
     checkAndSuspense(suspense): void {
         if (suspense && this.resolverData.isMissingData && this.resolverData.owner) {
             const fragmentOwner = this.resolverData.owner;
-            const networkPromise = _getAndSavePromiseForFragmentRequestInFlight(fragmentOwner, this._environment);
+            const networkPromise = _getAndSavePromiseForFragmentRequestInFlight(this._fragment, fragmentOwner, this._environment);
             const parentQueryName = fragmentOwner.node.params.name ?? 'Unknown Parent Query';
             if (networkPromise != null) {
                 // When the Promise for the request resolves, we need to make sure to
@@ -256,6 +289,7 @@ export class FragmentResolver {
             const { isLoading, error } = this.fetcherRefecth.getData();
             const refetch = this.refetch;
             if (!this.pagination) {
+                // useRefetchable
                 if ('production' !== process.env.NODE_ENV) {
                     getRefetchMetadata(this._fragment, this.name);
                 }
@@ -265,32 +299,35 @@ export class FragmentResolver {
                     error,
                     refetch,
                 };
-                return;
-            }
-            const { connectionPathInFragmentData } = getPaginationMetadata(this._fragment, this.name);
+            } else {
+                // usePagination
+                const { connectionPathInFragmentData } = getPaginationMetadata(this._fragment, this.name);
 
-            const connection = getValueAtPath(data, connectionPathInFragmentData);
-            const { hasMore: hasNext } = getStateFromConnection('forward', this._fragment, connection);
-            const { hasMore: hasPrevious } = getStateFromConnection('backward', this._fragment, connection);
-            const { isLoading: isLoadingNext, error: errorNext } = this.fetcherNext.getData();
-            const { isLoading: isLoadingPrevious, error: errorPrevious } = this.fetcherPrevious.getData();
-            this.result = {
-                data,
-                hasNext,
-                isLoadingNext,
-                hasPrevious,
-                isLoadingPrevious,
-                isLoading,
-                errorNext,
-                errorPrevious,
-                error,
-                refetch,
-                loadNext: this.loadNext,
-                loadPrevious: this.loadPrevious,
-            };
-            return;
+                const connection = getValueAtPath(data, connectionPathInFragmentData);
+                const { hasMore: hasNext } = getStateFromConnection('forward', this._fragment, connection);
+                const { hasMore: hasPrevious } = getStateFromConnection('backward', this._fragment, connection);
+                const { isLoading: isLoadingNext, error: errorNext } = this.fetcherNext.getData();
+                const { isLoading: isLoadingPrevious, error: errorPrevious } = this.fetcherPrevious.getData();
+                this.result = {
+                    data,
+                    hasNext,
+                    isLoadingNext,
+                    hasPrevious,
+                    isLoadingPrevious,
+                    isLoading,
+                    errorNext,
+                    errorPrevious,
+                    error,
+                    refetch,
+                    loadNext: this.loadNext,
+                    loadPrevious: this.loadPrevious,
+                };
+            }
+        } else {
+            // useFragment
+            this.result = data;
         }
-        this.result = data;
+        this._subscribeResolve && this._subscribeResolve(this.result);
     }
 
     unsubscribe(): void {
@@ -418,7 +455,7 @@ export class FragmentResolver {
                 this._fragmentRefRefetch = fragmentRef;
                 this._idfragmentrefetch = getFragmentIdentifier(this._fragment, fragmentRef);
                 this.lookup(this._fragment, fragmentRef);
-                //this.subscribe();
+                this.subscribe();
                 /*if (!missData) {
                     this.subscribe();
                 }*/
@@ -438,6 +475,7 @@ export class FragmentResolver {
             options?.fetchPolicy,
             options?.onComplete,
             onNext,
+            options?.onResponse,
             options?.UNSTABLE_renderPolicy,
         );
     };
@@ -549,6 +587,7 @@ export class FragmentResolver {
             undefined, //options?.fetchPolicy,
             onComplete,
             onNext,
+            options?.onResponse,
         );
     };
 }
@@ -587,7 +626,13 @@ export const resolverDecorator = (
             prev.idfragment = idfragment;
         }
         // todo idfragment
+        resolver.subscribeResolve(props.subscribeResolve);
+
         resolver.resolve(environment as Environment, prev.idfragment, props.fragmentNode || props.fragmentNode, props.fragmentRef);
+        if (props.subscribeResolve) {
+            resolver.setForceUpdate();
+            return;
+        }
         return resolver.getData();
     };
     const dispose = (): void => {
