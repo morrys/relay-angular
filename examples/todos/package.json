@@ -23,7 +23,7 @@
     "rxjs": "~6.6.2",
     "tslib": "^2.0.1",
     "zone.js": "~0.10.3",
-    "relay-angular": "0.2.0",
+    "relay-angular": "1.0.0",
     "relay-angular-plugin": "1.0.0",
     "graphql-relay": "^0.6.0",
     "graphql": "^14.2.0",
