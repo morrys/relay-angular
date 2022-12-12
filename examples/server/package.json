@@ -5,7 +5,7 @@
     "update-schema": "ts-node ./scripts/updateSchema.ts"
   },
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-graphql": "^0.7.1",
     "graphql": "^14.2.0",
     "graphql-relay": "^0.6.0",
